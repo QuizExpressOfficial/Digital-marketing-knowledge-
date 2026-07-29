@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Marketing Master Class</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap');
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        body {
+            background: #030712;
+            color: #f3f4f6;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            padding: 0.5rem;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Fireworks Animation Canvas Background */
+        #fireworksCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .main-container {
+            position: relative;
+            z-index: 2;
+            width: 100%;
+            max-width: 100%;
+            background: rgba(17, 24, 39, 0.55);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 1rem;
+            padding: 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6), inset 0 1px 2px rgba(255, 255, 255, 0.25);
+            margin: 0.2rem;
+        }
+
+        /* Top Back to Hub Button */
+        .btn-hub {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            background: rgba(14, 165, 233, 0.2);
+            border: 1px solid rgba(56, 189, 248, 0.5);
+            color: #38bdf8;
+            font-size: 0.75rem;
+            font-weight: 800;
+            padding: 0.4rem 0.8rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            text-decoration: none;
+            margin-bottom: 1rem;
+            backdrop-filter: blur(10px);
+        }
+
+        /* Glassmorphism, 3D & Light Yellow-Orange Gradient Heading */
+        .heading-3d {
+            font-size: 1.8rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            text-align: center;
+            background: linear-gradient(135deg, #fef08a 0%, #fed7aa 50%, #fb923c 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 3px 6px rgba(0, 0, 0, 0.4), 0 0 20px rgba(251, 146, 60, 0.3);
+            margin-bottom: 0.1rem;
+        }
+
+        .subheading-hindi {
+            text-align: center;
+            font-size: 0.85rem;
+            color: #fdba74;
+            font-weight: 700;
+            margin-bottom: 0.8rem;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+        }
+
+        /* Email Icons Only Style (No Text) */
+        .email-icons-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 0.8rem;
+            margin-bottom: 1.2rem;
+            flex-wrap: wrap;
+        }
+
+        .email-symbol-badge {
+            background: rgba(15, 23, 42, 0.75);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            width: 2.6rem;
+            height: 2.6rem;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.1rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.4), inset 0 1px 2px rgba(255,255,255,0.2);
+            transition: transform 0.2s ease;
+        }
+
+        .email-symbol-badge:hover {
+            transform: scale(1.1);
+        }
+
+        .content-box {
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            padding: 1.1rem;
+            border-radius: 0.75rem;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            margin-bottom: 0.8rem;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35), inset 0 1px 1px rgba(255, 255, 255, 0.1);
+        }
+
+        /* Unique Vibrant Sub-Headings */
+        .title-blue { color: #38bdf8; font-size: 1.05rem; font-weight: 800; margin-bottom: 0.5rem; text-shadow: 0 1px 3px rgba(0,0,0,0.6); }
+        .title-green { color: #4ade80; font-size: 1.05rem; font-weight: 800; margin-bottom: 0.5rem; text-shadow: 0 1px 3px rgba(0,0,0,0.6); }
+        .title-purple { color: #c084fc; font-size: 1.05rem; font-weight: 800; margin-bottom: 0.5rem; text-shadow: 0 1px 3px rgba(0,0,0,0.6); }
+        .title-orange { color: #fb923c; font-size: 1.05rem; font-weight: 800; margin-bottom: 0.5rem; text-shadow: 0 1px 3px rgba(0,0,0,0.6); }
+        .title-pink { color: #f472b6; font-size: 1.05rem; font-weight: 800; margin-bottom: 0.5rem; text-shadow: 0 1px 3px rgba(0,0,0,0.6); }
+
+        p, li {
+            font-size: 0.88rem;
+            line-height: 1.6;
+            color: #e2e8f0;
+            text-align: justify;
+        }
+
+        ul {
+            padding-left: 0;
+            list-style: none;
+            margin-top: 0.4rem;
+        }
+
+        li {
+            margin-bottom: 0.8rem;
+        }
+
+        /* Glassmorphic Step Item Design with Fireworks-like Glow */
+        .step-item {
+            background: rgba(255, 255, 255, 0.04);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 0.6rem;
+            padding: 0.8rem;
+            box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.1);
+        }
+
+        .step-heading {
+            font-size: 0.95rem;
+            font-weight: 800;
+            margin-bottom: 0.3rem;
+            display: block;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+            letter-spacing: 0.03em;
+        }
+
+        .step-text {
+            font-size: 0.85rem;
+            color: #cbd5e1;
+            line-height: 1.5;
+        }
+
+        /* Photo Example Box Style with Glass Effect */
+        .photo-example-box {
+            background: rgba(15, 23, 42, 0.65);
+            backdrop-filter: blur(15px);
+            border: 1px dashed rgba(56, 189, 248, 0.5);
+            border-radius: 0.75rem;
+            padding: 1rem;
+            margin-bottom: 0.8rem;
+            text-align: center;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+        }
+
+        .photo-example-box img {
+            width: 100%;
+            height: auto;
+            max-height: 200px;
+            object-fit: cover;
+            border-radius: 0.5rem;
+            margin-top: 0.5rem;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.5);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .summary-box {
+            background: rgba(245, 158, 11, 0.15);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(245, 158, 11, 0.4);
+            border-radius: 0.75rem;
+            padding: 1.1rem;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Fireworks Canvas -->
+    <canvas id="fireworksCanvas"></canvas>
+
+    <div class="main-container">
+        
+        <!-- Back to Hub Button -->
+        <a href="#" onclick="history.back(); return false;" class="btn-hub">
+            🏠 Back to Hub
+        </a>
+
+        <!-- Main Heading -->
+        <h1 class="heading-3d">Email Marketing</h1>
+        <div class="subheading-hindi">(Master Class - Complete Detailed Guide)</div>
+
+        <!-- 5 Different Email Box Logos Only (No Text) -->
+        <div class="email-icons-container">
+            <div class="email-symbol-badge">📥</div>
+            <div class="email-symbol-badge">✉️</div>
+            <div class="email-symbol-badge">📨</div>
+            <div class="email-symbol-badge">📦</div>
+            <div class="email-symbol-badge">📩</div>
+        </div>
+
+        <!-- Section 1 -->
+        <div class="content-box">
+            <h2 class="title-blue">Email Marketing Kya Hai Aur Kisko Bolte Hain?</h2>
+            <p>Email marketing ek behad powerful digital marketing ki taknik hai jiske madhyam se koi bhi business, company ya creator apne target audience aur loyal customers ko seedhe unke personal email inbox par messages bhejta hai. Iske zariye naye products, special discounts, important updates, aur valuable content ko direct share kiya jata hai taki brand aur customer ke beech ek mazboot aur bharosemand rishta ban sake.</p>
+        </div>
+
+        <!-- Section 2 -->
+        <div class="content-box">
+            <h2 class="title-green">Email Marketing Karna Kyon Zaroori Hai?</h2>
+            <p>Aaj ke digital daur me social media platforms ke algorithms lagataar badalte rehte hain, jisse aapke har post har follower tak nahi pahunch paate. Lekin email marketing ek aisa madhyam hai jisme aapka data bilkul secure rehta hai aur aapka sandesh bina kisi rukawat ke seedhe user ke inbox tak jata hai. Isse conversion rate, sales aur customer trust sabse zyada boost hota hai.</p>
+        </div>
+
+        <!-- Section 3 -->
+        <div class="content-box">
+            <h2 class="title-purple">Business Ko Grow Karne Ka Poora Tarika (Step by Step)</h2>
+            <p style="margin-bottom: 0.8rem;">Apne business ko email marketing ke zariye shuru se lekar unchaiyon tak le jaane ke liye aapko in vistarit steps ko apnana hoga:</p>
+            
+            <ul>
+                <li class="step-item">
+                    <span class="step-heading" style="color: #38bdf8;">1. Email List Build Karna</span>
+                    <span class="step-text">Sabse pehle apni website, landing page ya social media ke zariye logo ke email addresses collect karne hote hain. Iske liye aap unhe koi free resource ya special discount offer kar sakte hain.</span>
+                </li>
+                
+                <li class="step-item">
+                    <span class="step-heading" style="color: #4ade80;">2. Sahi Software Chunna</span>
+                    <span class="step-text">Mailchimp, Brevo ya ConvertKit jaise professional email marketing tools ka chayan karein jo aapke emails ko automatic bhejne aur manage karne me madad karte hain.</span>
+                </li>
+                
+                <li class="step-item">
+                    <span class="step-heading" style="color: #f472b6;">3. Audience Ko Segment Karna</span>
+                    <span class="step-text">Apne sabhi subscribers ko unki pasand, zaroorat aur khariddari ke itihas ke aadhar par alag-alag categories me baant dein taki sabko unke kaam ki cheezein milein.</span>
+                </li>
+                
+                <li class="step-item">
+                    <span class="step-heading" style="color: #f6e05e;">4. Attractive Content Design Karna</span>
+                    <span class="step-text">Ek aakarshak subject line aur andar valuable jankari taiyar karein jo padhne wale ko turant action lene par majboor kare.</span>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Section 4 -->
+        <div class="content-box">
+            <h2 class="title-orange">Email Marketing Ke Fayde (Benefits Explained)</h2>
+            <p style="margin-bottom: 0.8rem;">Email marketing ke kayi behtareen fayde hain, jinko hum alag-alag sub-headings aur examples ke sath samajhte hain:</p>
+            
+            <ul>
+                <li class="step-item">
+                    <span class="step-heading" style="color: #f6e05e;">High ROI (Return on Investment) Ka Fayda</span>
+                    <span class="step-text">Baki paid ads ke mukable email marketing me kharch bahut kam hota hai aur return kayi guna zyada milta hai.<br><em>Example:</em> Agar aapne ₹1,000 ka email software use karke campaign chalaya aur usse ₹10,000 ki sales ho gayi, toh aapka ROI bahut high rahega.</span>
+                </li>
+                
+                <li class="step-item">
+                    <span class="step-heading" style="color: #38bdf8;">Direct & Personal Connection Ka Fayda</span>
+                    <span class="step-text">Aap apne customer ke sath seedha one-on-one communication kar sakte hain jo social media par mushkil hota hai.<br><em>Example:</em> Customer ke birthday par unke naam ka special discount email bhejna, jisse unhe lagta hai ki brand unki parwah karta hai.</span>
+                </li>
+                
+                <li class="step-item">
+                    <span class="step-heading" style="color: #4ade80;">Full Control & Ownership Ka Fayda</span>
+                    <span class="step-text">Aapka email subscriber list aur data hamesha aapke paas secure rehta hai, kisi social media algorithm par nirbhar nahi hota.<br><em>Example:</em> Agar kal ko koi social media app ban ya change ho jaye, tab bhi aapki email list aapke paas safe rahegi.</span>
+                </li>
+                
+                <li class="step-item">
+                    <span class="step-heading" style="color: #c084fc;">Easy Tracking & Analytics Ka Fayda</span>
+                    <span class="step-text">Aapko poori report milti hai ki kis-kis ne email open kiya aur kitno ne link par click kiya.<br><em>Example:</em> Aap track kar sakte hain ki 1,000 logo me se 400 logo ne email khola, jisse aapko pata chalega ki aapka subject kitna strong tha.</span>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Photo Example Section -->
+        <div class="photo-example-box">
+            <h2 class="title-pink" style="font-size: 1rem; margin-bottom: 0.2rem;">Email Marketing Growth Example</h2>
+            <p style="font-size: 0.78rem; color: #cbd5e1; margin-bottom: 0.4rem;">Dekhiye ki kaise ek targeted email campaign run karne par business ki sales aur growth chart upar ki taraf badhta hai:</p>
+            <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=600&auto=format&fit=crop" alt="Business Growth Analytics Chart Preview">
+        </div>
+
+        <!-- Summary Section -->
+        <div class="summary-box">
+            <h2 class="title-orange" style="font-size: 1.05rem;">Quick Summary (निष्कर्ष)</h2>
+            <p>Sankshep me kahein toh email marketing kisi bhi online ya offline business ko tezi se scale karne aur lambe samay tak safal banane ki sabse behtareen kunji hai. Sahi email list taiyar karke, unhe vistarit aur aakarshak jankari bhejne se na sirf brand awareness badhti hai, balki sales aur revenue me bhi massive growth dekhne ko milti hai.</p>
+        </div>
+
+    </div>
+
+    <!-- JavaScript for Interactive Fireworks Background Effect -->
+    <script>
+        const canvas = document.getElementById('fireworksCanvas');
+        const ctx = canvas.getContext('2d');
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+
+        class Firework {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = canvas.height;
+                this.targetY = Math.random() * (canvas.height * 0.5);
+                this.speed = 3 + Math.random() * 3;
+                this.radius = 2;
+                this.angle = Math.atan2(this.targetY - this.y, 0);
+                this.sparkles = [];
+                this.exploded = false;
+                this.color = `hsl(${Math.random() * 360}, 100%, 60%)`;
+            }
+
+            update() {
+                if (!this.exploded) {
+                    this.y -= this.speed;
+                    if (this.y <= this.targetY) {
+                        this.exploded = true;
+                        this.explode();
+                    }
+                } else {
+                    for (let i = this.sparkles.length - 1; i >= 0; i--) {
+                        this.sparkles[i].update();
+                        if (this.sparkles[i].alpha <= 0) {
+                            this.sparkles.splice(i, 1);
+                        }
+                    }
+                }
+            }
+
+            explode() {
+                const count = 40 + Math.random() * 30;
+                for (let i = 0; i < count; i++) {
+                    this.sparkles.push(new Sparkle(this.x, this.targetY, this.color));
+                }
+            }
+
+            draw() {
+                if (!this.exploded) {
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                    ctx.fillStyle = this.color;
+                    ctx.fill();
+                } else {
+                    this.sparkles.forEach(s => s.draw());
+                }
+            }
+        }
+
+        class Sparkle {
+            constructor(x, y, color) {
+                this.x = x;
+                this.y = y;
+                this.color = color;
+                const angle = Math.random() * Math.PI * 2;
+                const speed = Math.random() * 5;
+                this.vx = Math.cos(angle) * speed;
+                this.vy = Math.sin(angle) * speed;
+                this.alpha = 1;
+                this.friction = 0.95;
+                this.gravity = 0.05;
+                this.decay = Math.random() * 0.02 + 0.015;
+            }
+
+            update() {
+                this.vx *= this.friction;
+                this.vy *= this.friction;
+                this.vy += this.gravity;
+                this.x += this.vx;
+                this.y += this.vy;
+                this.alpha -= this.decay;
+            }
+
+            draw() {
+                ctx.save();
+                ctx.globalAlpha = this.alpha;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, 1.5, 0, Math.PI * 2);
+                ctx.fillStyle = this.color;
+                ctx.fill();
+                ctx.restore();
+            }
+        }
+
+        let fireworks = [];
+
+        function animate() {
+            ctx.fillStyle = 'rgba(3, 7, 18, 0.25)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            if (Math.random() < 0.04) {
+                fireworks.push(new Firework());
+            }
+
+            for (let i = fireworks.length - 1; i >= 0; i--) {
+                fireworks[i].update();
+                fireworks[i].draw();
+                if (fireworks[i].exploded && fireworks[i].sparkles.length === 0) {
+                    fireworks.splice(i, 1);
+                }
+            }
+
+            requestAnimationFrame(animate);
+        }
+
+        animate();
+    </script>
+</body>
+</html>
