@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Social Media Marketing Mastery</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap');
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        body {
+            background: #05050a;
+            color: #ffffff;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.75rem;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        #fireworksCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .main-container {
+            width: 100%;
+            max-width: 42rem;
+            min-height: 92vh;
+            background: rgba(18, 18, 26, 0.45);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border-radius: 1.25rem;
+            padding: 1.5rem 1.1rem;
+            position: relative;
+            z-index: 1;
+            overflow-y: auto;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8), inset 0 1px 2px rgba(255, 255, 255, 0.15);
+            display: flex;
+            flex-direction: column;
+            gap: 1.15rem;
+        }
+
+        /* Top-Left Corner Back-to-Hub Button */
+        .top-left-back-btn {
+            position: absolute;
+            top: 0.85rem;
+            left: 0.85rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: #38bdf8;
+            font-size: 0.85rem;
+            font-weight: 800;
+            padding: 0.4rem 0.75rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            backdrop-filter: blur(10px);
+            transition: all 0.2s;
+            z-index: 100;
+        }
+        .top-left-back-btn:hover {
+            background: rgba(56, 189, 248, 0.2);
+            color: #ffffff;
+        }
+
+        /* Fully 3D & Glass Transparent Eye-Catching Heading */
+        .welcome-3d-title {
+            font-size: 1.9rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            text-align: center;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(0, 242, 254, 0.85));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 25px rgba(0, 242, 254, 0.6), 0 10px 30px rgba(0, 0, 0, 0.9);
+            filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.8));
+            margin-top: 1.2rem;
+            margin-bottom: 0.1rem;
+        }
+
+        .welcome-underline {
+            width: 80%;
+            max-width: 18rem;
+            height: 3px;
+            background: linear-gradient(to right, transparent, rgba(0, 242, 254, 0.8), transparent);
+            margin: 0.2rem auto 0.6rem auto;
+            border-radius: 9999px;
+            box-shadow: 0 0 10px rgba(0, 242, 254, 0.5);
+        }
+
+        /* Completely Transparent Glass Card Box */
+        .card-box {
+            background: rgba(255, 255, 255, 0.02);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            padding: 1.3rem;
+            border-radius: 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: inset 0 1px 2px 0 rgba(255, 255, 255, 0.06), 0 10px 30px 0 rgba(0, 0, 0, 0.3);
+            text-align: left;
+        }
+
+        /* Eye-Catching Main Headings Inside Cards */
+        .card-box h3 {
+            font-size: 1.2rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.6rem;
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.7));
+        }
+
+        /* Increased Font Sizes for Paragraphs and Text Content */
+        .card-box p, .card-box div, .card-box span {
+            font-size: 0.95rem !important;
+            line-height: 1.55;
+        }
+
+        /* Compact Side-by-Side 3D Transparent Icon Container (Exact 5 SVGs without extra gaps) */
+        .social-static-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            margin: 0.2rem 0 0.5rem 0;
+        }
+
+        .social-icon-badge {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            width: 42px;
+            height: 42px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5), inset 0 1px 1px rgba(255, 255, 255, 0.2);
+            transition: transform 0.2s;
+        }
+
+        .social-icon-badge:hover {
+            transform: scale(1.08);
+            background: rgba(56, 189, 248, 0.1);
+        }
+
+        .social-icon-badge svg {
+            width: 22px;
+            height: 22px;
+            fill: #00f2fe;
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.8));
+        }
+
+        .smm-3d-logo-container {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0.1rem 0;
+            perspective: 800px;
+        }
+
+        .smm-rotating-box {
+            width: 70px;
+            height: 70px;
+            background: rgba(255, 255, 255, 0.04);
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            box-shadow: 0 0 25px rgba(56, 189, 248, 0.2);
+            animation: rotate3dBox 6s infinite linear;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+        }
+
+        @keyframes rotate3dBox {
+            0% { transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg); }
+            50% { transform: rotateX(180deg) rotateY(180deg) rotateZ(45deg); }
+            100% { transform: rotateX(360deg) rotateY(360deg) rotateZ(0deg); }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Fireworks Canvas Effect -->
+    <canvas id="fireworksCanvas"></canvas>
+
+    <div class="main-container">
+        
+        <!-- Top-Left Corner Back-to-Hub Button -->
+        <button onclick="goToHub()" class="top-left-back-btn">⬅ Back to Hub</button>
+
+        <!-- Main Header & Underline -->
+        <div>
+            <h2 class="welcome-3d-title">SOCIAL MEDIA MARKETING</h2>
+            <div class="welcome-underline"></div>
+            <p style="font-size: 0.9rem; color: #bae6fd; font-weight: 700; text-align: center; opacity: 0.9;">Complete Master Class</p>
+        </div>
+
+        <!-- Exact 5 Real Social Media SVG Icons Side-by-Side (Facebook, WhatsApp, Instagram, YouTube, LinkedIn) -->
+        <div class="social-static-container">
+            <!-- Facebook SVG Icon -->
+            <div class="social-icon-badge" title="Facebook">
+                <svg viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12c0-5.523-4.477-10-10-10z"/></svg>
+            </div>
+            <!-- WhatsApp SVG Icon -->
+            <div class="social-icon-badge" title="WhatsApp">
+                <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.096 3.2 5.077 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.452-4.437 9.884-9.888 9.884m9.014-18.9c-2.316-2.318-5.399-3.595-8.674-3.595-6.753 0-12.247 5.494-12.247 12.249 0 2.158.562 4.264 1.63 6.115l-1.734 6.33 6.473-1.695c1.782.972 3.82 1.485 5.882 1.485h.005c6.751 0 12.246-5.494 12.246-12.248 0-3.273-1.276-6.355-3.592-8.673z"/></svg>
+            </div>
+            <!-- Instagram SVG Icon -->
+            <div class="social-icon-badge" title="Instagram">
+                <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+            </div>
+            <!-- YouTube SVG Icon -->
+            <div class="social-icon-badge" title="YouTube">
+                <svg viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+            </div>
+            <!-- LinkedIn SVG Icon -->
+            <div class="social-icon-badge" title="LinkedIn">
+                <svg viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+            </div>
+        </div>
+
+        <!-- 3D Animated Logo -->
+        <div class="smm-3d-logo-container">
+            <div class="smm-rotating-box">📱</div>
+        </div>
+
+        <!-- Section 1: Social Media Kisko Bolte Hain -->
+        <div class="card-box" style="border-color: rgba(56, 189, 248, 0.3);">
+            <h3 style="color: #38bdf8; text-shadow: 0 0 12px rgba(56,189,248,0.5);">Social Media Kisko Bolte Hain? (सोशल मीडिया किसको बोलते हैं?)</h3>
+            <p style="color: #d1d5db; margin-bottom: 0.8rem;">
+                Aasaan bhasha me samjhein, jaise ek ghar ki mahila ya local dukaan wala apne mohalle ya bazaar me jakar apne saman ki charcha karta hai aur logo ko apne product bechta hai—waise hi jab hum internet par <b>Facebook, Instagram, YouTube, LinkedIn aur WhatsApp</b> ka use karke apne ghar, dukaan ya business ki baatein hazaro logo tak pahunchate hain, toh use hi <b>Social Media</b> kaha jata hai.
+            </p>
+            <div style="background: rgba(56, 189, 248, 0.05); border-left: 3px solid #38bdf8; padding: 0.7rem 0.9rem; color: #bae6fd; border-radius: 0 0.4rem 0.4rem 0; backdrop-filter: blur(5px);">
+                <b>Gharelu Example:</b> Maan lijiye aapke ghar me tiffin service ya homemade achaar ka business hai. Aapne phone se ek choti si video banakar WhatsApp status aur Facebook par daal di ki "Ghar ka bana swadisht khana order karein." Aas-pados aur rishtedaron ke zariye wo baat aage feli aur aapke paas orders aane lage. Yehi social media ki taakat hai!
+            </div>
+        </div>
+
+        <!-- Section 2: Social Media Kya Hai -->
+        <div class="card-box" style="border-color: rgba(14, 165, 233, 0.3);">
+            <h3 style="color: #0ea5e9; text-shadow: 0 0 15px rgba(14,165,233,0.6);">✨ What is Social Media Marketing? (सोशल मीडिया क्या है?)</h3>
+            <p style="color: #d1d5db;">
+                <b>Social Media Marketing (SMM)</b> ek aisi dynamic aur powerful digital strategy hai jiske zariye hum alag-alag internet platforms par apne brand, products ya services ka prachar karte hain. Yeh sirf entertainment ka sadhan nahi, balki digital connect establish karne ka sabse bada medium hai.
+            </p>
+        </div>
+
+        <!-- Section 3: Kyu Zaroori Hai -->
+        <div class="card-box" style="border-color: rgba(139, 92, 246, 0.3);">
+            <h3 style="color: #a78bfa; text-shadow: 0 0 15px rgba(139,92,246,0.6);">🔥 Why It Is Essential? (सोशल मीडिया क्यों जरूरी है?)</h3>
+            <p style="color: #d1d5db;">
+                Aaj ke digital daur me har customer ka smartphone unke paas 24 ghante rehta hai. Agar aapka business ya talent online available nahi hai, toh aap apne competitors se peeche reh jaate hain. Yeh bina kisi bade budget ke direct target audience ke dil aur dimag tak pahunchne ka sabse tez aur asardaar zariya hai.
+            </p>
+        </div>
+
+        <!-- Section 4: Social Media me Grow Kaise Karein -->
+        <div class="card-box" style="border-color: rgba(16, 185, 129, 0.3);">
+            <h3 style="color: #34d399; text-shadow: 0 0 12px rgba(52,211,153,0.5);">🚀 Social Media Me Grow Kaise Karein? (Step-by-Step Guide)</h3>
+            
+            <div style="margin-bottom: 0.95rem; padding-bottom: 0.8rem; border-bottom: 1px solid rgba(255,255,255,0.06);">
+                <p style="font-weight: 800; color: #38bdf8; margin-bottom: 0.25rem;">Step 1: Profile Optimization (Basic Level)</p>
+                <p style="color: #9ca3af;">Apne account ya page ke liye ek professional profile setup karein. Clear profile picture, catchy bio, aur proper contact details add karein.</p>
+            </div>
+
+            <div style="margin-bottom: 0.95rem; padding-bottom: 0.8rem; border-bottom: 1px solid rgba(255,255,255,0.06);">
+                <p style="font-weight: 800; color: #fbbf24; margin-bottom: 0.25rem;">Step 2: Consistent Content Creation (Intermediate Level)</p>
+                <p style="color: #9ca3af;">Roj ya ek tay schedule par high-value content, engaging reels aur informative posts share karein taaki audience ke sath trust build ho.</p>
+            </div>
+
+            <div style="margin-bottom: 0.95rem; padding-bottom: 0.8rem; border-bottom: 1px solid rgba(255,255,255,0.06);">
+                <p style="font-weight: 800; color: #f472b6; margin-bottom: 0.25rem;">Step 3: Community Engagement (Advanced Level)</p>
+                <p style="color: #9ca3af;">Comments ka reply karein, stories me polls chalayein aur audience ke sath active connection banayein taaki wo loyal customers ban sakein.</p>
+            </div>
+
+            <div>
+                <p style="font-weight: 800; color: #a78bfa; margin-bottom: 0.25rem;">Step 4: Paid Ads & Analytics (Expert Level)</p>
+                <p style="color: #9ca3af;">Meta Ads Manager ka use karke apne best content ko boost karein aur data analyze karke growth ko 10x karein.</p>
+            </div>
+        </div>
+
+        <!-- Section 5: Social Media Par Grow Karne ke Fayde & 3D Visual Example -->
+        <div class="card-box" style="border-color: rgba(236, 72, 153, 0.3);">
+            <h3 style="color: #ec4899; text-shadow: 0 0 12px rgba(236,72,153,0.5);">💎 Social Media Par Grow Karne Ke Fayde & Visual Example</h3>
+            
+            <p style="color: #d1d5db; margin-bottom: 0.8rem;">
+                Jab aap social media par properly grow karte hain, toh aapko kai zabardast fayde milte hain. Isko aap niche diye gaye 3D visual concept ke zariye samajh sakte hain:
+            </p>
+
+            <!-- 3D Conceptual Visual Representation Box -->
+            <div style="background: rgba(236, 72, 153, 0.05); border: 1px solid rgba(236, 72, 153, 0.25); border-radius: 0.75rem; padding: 1rem; text-align: center; margin-bottom: 0.9rem; backdrop-filter: blur(10px); box-shadow: inset 0 0 15px rgba(236,72,153,0.1);">
+                <div style="font-size: 2.2rem; margin-bottom: 0.4rem; filter: drop-shadow(0 0 10px rgba(236,72,153,0.6));">📊 🌐 🚀</div>
+                <p style="font-size: 0.95rem; font-weight: 800; color: #f472b6; margin-bottom: 0.3rem;">3D Growth Pipeline Visual</p>
+                <p style="font-size: 0.85rem; color: #cbd5e1; font-style: italic;">
+                    "Local Shop (Small Setup) ➡️ Social Media Exposure (Viral Reel/Post) ➡️ Global Reach & 5x Sales Boost"
+                </p>
+            </div>
+
+            <div style="margin-bottom: 0.8rem;">
+                <p style="font-weight: 800; color: #38bdf8; margin-bottom: 0.15rem;">1. Massive Brand Recognition (बड़ी पहचान)</p>
+                <p style="color: #9ca3af;">Aapka chota sa business ya local talent raato-raat poori duniya me famous ho sakta hai bina kisi heavy investment ke.</p>
+            </div>
+
+            <div>
+                <p style="font-weight: 800; color: #34d399; margin-bottom: 0.15rem;">2. Exponential Sales Growth (बिक्री और कमाई में उछाल)</p>
+                <p style="color: #9ca3af;">Ghar baithe 24 ghante online orders generate kiye ja sakte hain, jisse business ki growth kai guna badh jati hai.</p>
+            </div>
+        </div>
+
+        <!-- Section 6: Summary -->
+        <div class="card-box" style="border-color: rgba(245, 158, 11, 0.3);">
+            <h3 style="color: #facc15; text-shadow: 0 0 12px rgba(250,204,21,0.5);">📌 Social Media Marketing Summary</h3>
+            <p style="color: #d1d5db;">
+                Short me kahein toh, Social Media Marketing sirf random photos ya video upload karne ka naam nahi hai. Yeh ek powerful digital pipeline hai jo aapke brand ko pehchan dilati hai, logo ke sath strong trust relationship banati hai aur aapke business ko exponential growth deti hai. Consistency, right strategy, aur audience ki zaroorat ko samajhna hi iski safalta ki asli chaabi hai!
+            </p>
+        </div>
+
+    </div>
+
+    <script>
+        function goToHub() {
+            window.history.back();
+        }
+
+        // Fireworks Background Animation Script
+        const canvas = document.getElementById('fireworksCanvas');
+        const ctx = canvas.getContext('2d');
+        function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        class Firework {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = canvas.height;
+                this.targetY = Math.random() * (canvas.height / 2);
+                this.speed = 4 + Math.random() * 3;
+                this.particles = [];
+                this.exploded = false;
+                this.color = `hsl(${Math.random() * 360}, 100%, 60%)`;
+            }
+            update() {
+                if (!this.exploded) {
+                    this.y -= this.speed;
+                    if (this.y <= this.targetY) { this.exploded = true; this.explode(); }
+                } else {
+                    for (let i = this.particles.length - 1; i >= 0; i--) {
+                        this.particles[i].update();
+                        if (this.particles[i].alpha <= 0) this.particles.splice(i, 1);
+                    }
+                }
+            }
+            explode() {
+                let count = 40 + Math.random() * 20;
+                for (let i = 0; i < count; i++) this.particles.push(new Particle(this.x, this.targetY, this.color));
+            }
+            draw() {
+                if (!this.exploded) { ctx.fillStyle = this.color; ctx.fillRect(this.x, this.y, 3, 10); }
+                else { this.particles.forEach(p => p.draw()); }
+            }
+        }
+
+        class Particle {
+            constructor(x, y, color) {
+                this.x = x; this.y = y; this.color = color;
+                let angle = Math.random() * Math.PI * 2, speed = Math.random() * 5;
+                this.vx = Math.cos(angle) * speed; this.vy = Math.sin(angle) * speed;
+                this.alpha = 1; this.decay = Math.random() * 0.02 + 0.015;
+            }
+            update() { this.x += this.vx; this.y += this.vy; this.vy += 0.08; this.alpha -= this.decay; }
+            draw() {
+                ctx.save(); ctx.globalAlpha = this.alpha; ctx.fillStyle = this.color;
+                ctx.beginPath(); ctx.arc(this.x, this.y, 2.5, 0, Math.PI * 2); ctx.fill(); ctx.restore();
+            }
+        }
+
+        let fireworks = [];
+        function animate() {
+            ctx.fillStyle = 'rgba(5, 5, 10, 0.2)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            if (Math.random() < 0.04) fireworks.push(new Firework());
+            for (let i = fireworks.length - 1; i >= 0; i--) {
+                fireworks[i].update(); fireworks[i].draw();
+                if (fireworks[i].exploded && fireworks[i].particles.length === 0) fireworks.splice(i, 1);
+            }
+            requestAnimationFrame(animate);
+        }
+        animate();
+    </script>
+</body>
+</html>
