@@ -1,0 +1,1261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digital Mastery Arena</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap');
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(rgba(3, 7, 18, 0.85), rgba(3, 7, 18, 0.90)), 
+                        url('https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?q=80&w=1920&auto=format&fit=crop') no-repeat center center fixed;
+            background-size: cover;
+            color: #f3f4f6;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.5rem;
+            overflow-x: hidden;
+        }
+
+        /* Transparent BLUE Background Mode After Login */
+        body.blue-bg-active {
+            background: linear-gradient(135deg, rgba(15, 23, 42, 0.92) 0%, rgba(30, 58, 138, 0.90) 50%, rgba(3, 105, 161, 0.94) 100%) !important;
+        }
+
+        /* Glassmorphism Transparent Main Container */
+        .main-container {
+            width: 100%;
+            max-width: 38rem;
+            background: rgba(17, 24, 39, 0.65);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            border-radius: 1.25rem;
+            padding: 1.25rem;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), inset 0 1px 2px rgba(255, 255, 255, 0.2);
+        }
+
+        /* Full Screen Transparent Blue Dashboard Mode */
+        .main-container.fullscreen-blue-mode {
+            max-width: 100vw;
+            min-height: 100vh;
+            border-radius: 0;
+            padding: 1.25rem 0.75rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            background: linear-gradient(180deg, rgba(30, 58, 138, 0.85) 0%, rgba(14, 116, 144, 0.80) 50%, rgba(15, 23, 42, 0.92) 100%);
+            box-shadow: none;
+            border: none;
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+        }
+
+        .theme-new { box-shadow: 0 0 35px rgba(16, 185, 129, 0.25); border: 1px solid rgba(16, 185, 129, 0.4); }
+        .theme-login { box-shadow: 0 0 35px rgba(6, 182, 212, 0.25); border: 1px solid rgba(6, 182, 212, 0.4); }
+        .theme-admin { box-shadow: 0 0 35px rgba(245, 158, 11, 0.25); border: 1px solid rgba(245, 158, 11, 0.4); }
+
+        * { position: relative; z-index: 1; }
+
+        .text-center { text-align: center; }
+        .mb-3 { margin-bottom: 0.75rem; }
+        .text-gray { color: #9ca3af; }
+        .space-y-3 > * + * { margin-top: 0.75rem; }
+
+        /* Premium 3D Frosted Glass Card Box */
+        .card-box {
+            background: rgba(15, 23, 42, 0.55);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            padding: 1.15rem;
+            border-radius: 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.22);
+            text-align: center;
+            box-shadow: inset 0 2px 6px 0 rgba(255, 255, 255, 0.12), 0 12px 40px 0 rgba(0, 0, 0, 0.45);
+            min-height: 250px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            width: 100%;
+        }
+
+        .input-box {
+            width: 100%;
+            background: rgba(17, 24, 39, 0.75);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 0.6rem;
+            padding: 0.7rem 0.875rem;
+            text-align: center;
+            color: #ffffff;
+            font-size: 0.95rem;
+            outline: none;
+            transition: border-color 0.2s;
+            margin-bottom: 0.5rem;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .input-box:focus { border-color: #38bdf8; box-shadow: 0 0 12px rgba(56, 189, 248, 0.5), inset 0 2px 4px rgba(0,0,0,0.3); }
+
+        .btn-primary {
+            width: 100%;
+            font-weight: 800;
+            padding: 0.7rem;
+            border-radius: 0.6rem;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.95rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+
+        .btn-secondary {
+            width: 100%;
+            background-color: rgba(55, 65, 81, 0.65);
+            backdrop-filter: blur(6px);
+            color: #f3f4f6;
+            font-weight: 700;
+            padding: 0.6rem;
+            border-radius: 0.6rem;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.9rem;
+        }
+
+        .btn-secondary:hover { background-color: rgba(75, 85, 99, 0.85); }
+        .hidden { display: none !important; }
+
+        /* Enhanced 3D Big Welcome Typography */
+        .welcome-3d-title {
+            font-size: 2.6rem;
+            font-weight: 900;
+            color: #ffffff;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            text-shadow: 0 1px 0 #ddd, 
+                         0 2px 0 #ccc, 
+                         0 3px 0 #bbb, 
+                         0 4px 0 #aaa, 
+                         0 5px 0 #999, 
+                         0 6px 1px rgba(0,0,0,.2), 
+                         0 0 18px rgba(56,189,248,0.7), 
+                         0 1px 3px rgba(0,0,0,.4), 
+                         0 5px 15px rgba(0,0,0,.6), 
+                         0 10px 25px rgba(0,0,0,.7);
+            margin-top: 0.2rem;
+            margin-bottom: 0.1rem;
+        }
+
+        .welcome-underline {
+            width: 80%;
+            max-width: 18rem;
+            height: 3px;
+            background: linear-gradient(to right, transparent, #38bdf8, transparent);
+            margin: 0.2rem auto 0.5rem auto;
+            border-radius: 9999px;
+        }
+
+        /* Glass Level Display Panel (3D Glass Raised Effect) */
+        .glass-level-panel {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            border-radius: 0.85rem;
+            padding: 0.65rem 1.1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 10px 30px 0 rgba(0, 0, 0, 0.3), inset 0 1px 2px rgba(255, 255, 255, 0.3);
+            width: 100%;
+        }
+
+        /* 3D Start Question Button Square Box */
+        .start-question-square-box {
+            background: linear-gradient(135deg, rgba(14, 165, 233, 0.75) 0%, rgba(3, 105, 161, 0.9) 100%);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border: 2px solid rgba(125, 211, 252, 0.8);
+            border-radius: 1rem;
+            padding: 1.05rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            box-shadow: 0 12px 35px rgba(14, 165, 233, 0.45), inset 0 2px 6px rgba(255, 255, 255, 0.5);
+            width: 100%;
+        }
+
+        .start-question-square-box:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 16px 40px rgba(56, 189, 248, 0.65), inset 0 2px 8px rgba(255, 255, 255, 0.7);
+            background: linear-gradient(135deg, rgba(3, 105, 161, 0.9) 0%, rgba(14, 165, 233, 0.85) 100%);
+        }
+
+        .hall-of-fame-panel {
+            width: 100%;
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(14px);
+            border: 1px solid rgba(56, 189, 248, 0.4);
+            border-radius: 0.85rem;
+            padding: 0.7rem;
+            margin-top: 0.4rem;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.35);
+        }
+
+        .quiz-header {
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(12px);
+            padding: 0.65rem 0.9rem;
+            border-radius: 0.75rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.8rem;
+            width: 100%;
+            box-shadow: 0 6px 25px rgba(0,0,0,0.3);
+        }
+
+        .badge-level {
+            background-color: rgba(8, 51, 68, 0.8);
+            border: 1px solid rgba(22, 78, 99, 0.6);
+            color: #67e8f9;
+            padding: 0.2rem 0.55rem;
+            border-radius: 9999px;
+            font-size: 0.7rem;
+            font-weight: 700;
+        }
+
+        .timer-track {
+            width: 100%;
+            background-color: rgba(3, 7, 18, 0.7);
+            height: 0.45rem;
+            border-radius: 9999px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+        }
+
+        @keyframes countdown {
+            0% { width: 100%; background-color: #06b6d4; }
+            60% { background-color: #38bdf8; }
+            100% { width: 0%; background-color: #ef4444; }
+        }
+
+        .timer-anim {
+            height: 100%;
+            animation: countdown 30s linear infinite;
+        }
+
+        .option-btn {
+            width: 100%;
+            text-align: left;
+            background: rgba(255, 255, 255, 0.07);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            color: #e2e8f0;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 0.75rem 0.9rem;
+            border-radius: 0.7rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 0.85rem;
+            line-height: 1.25;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15), inset 0 1px 1px rgba(255,255,255,0.2);
+        }
+
+        .option-btn:hover { 
+            background: rgba(255, 255, 255, 0.14);
+            border-color: #38bdf8;
+            box-shadow: 0 0 18px rgba(56, 189, 248, 0.35);
+        }
+
+        /* TRUE GLASS SHATTER & SCATTER EFFECT */
+        @keyframes shatterPiece1 {
+            0% { transform: translate(0, 0) rotate(0deg) scale(1); opacity: 1; }
+            100% { transform: translate(-65px, -70px) rotate(-45deg) scale(0.6); opacity: 0; filter: blur(3px); }
+        }
+        @keyframes shatterPiece2 {
+            0% { transform: translate(0, 0) rotate(0deg) scale(1); opacity: 1; }
+            100% { transform: translate(65px, -60px) rotate(55deg) scale(0.5); opacity: 0; filter: blur(3px); }
+        }
+        @keyframes shatterPiece3 {
+            0% { transform: translate(0, 0) rotate(0deg) scale(1); opacity: 1; }
+            100% { transform: translate(-55px, 65px) rotate(-70deg) scale(0.6); opacity: 0; filter: blur(3px); }
+        }
+        @keyframes shatterPiece4 {
+            0% { transform: translate(0, 0) rotate(0deg) scale(1); opacity: 1; }
+            100% { transform: translate(70px, 75px) rotate(80deg) scale(0.5); opacity: 0; filter: blur(3px); }
+        }
+
+        .shatter-glass-shards {
+            position: relative;
+            pointer-events: none;
+            background: transparent !important;
+            border: none !important;
+            box-shadow: none !important;
+            color: transparent !important;
+        }
+
+        .shatter-glass-shards::before, .shatter-glass-shards::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: rgba(239, 68, 68, 0.65);
+            backdrop-filter: blur(4px);
+            border: 1px solid #f87171;
+            border-radius: 0.5rem;
+        }
+
+        .shard-1 { position: absolute; top: 0; left: 0; width: 50%; height: 50%; background: rgba(220, 38, 38, 0.7); border: 1px solid #f87171; border-radius: 4px; animation: shatterPiece1 0.5s ease-out forwards; }
+        .shard-2 { position: absolute; top: 0; right: 0; width: 50%; height: 50%; background: rgba(239, 68, 68, 0.7); border: 1px solid #f87171; border-radius: 4px; animation: shatterPiece2 0.5s ease-out forwards; }
+        .shard-3 { position: absolute; bottom: 0; left: 0; width: 50%; height: 50%; background: rgba(185, 28, 28, 0.7); border: 1px solid #f87171; border-radius: 4px; animation: shatterPiece3 0.5s ease-out forwards; }
+        .shard-4 { position: absolute; bottom: 0; right: 0; width: 50%; height: 50%; background: rgba(220, 38, 38, 0.7); border: 1px solid #f87171; border-radius: 4px; animation: shatterPiece4 0.5s ease-out forwards; }
+
+        @keyframes flyUp {
+            0% { transform: translateY(0) scale(1); opacity: 1; }
+            100% { transform: translateY(-400px) scale(1.2); opacity: 0; }
+        }
+        .balloon {
+            position: absolute;
+            bottom: 10px;
+            width: 25px;
+            height: 32px;
+            border-radius: 50% 50% 50% 50% / 40% 40% 60% 60%;
+            animation: flyUp 1.8s ease-out forwards;
+            z-index: 50;
+            pointer-events: none;
+            box-shadow: inset -4px -4px 0px rgba(0,0,0,0.15);
+        }
+
+        .modal-overlay {
+            position: absolute;
+            inset: 0;
+            background-color: rgba(3, 7, 18, 0.88);
+            backdrop-filter: blur(16px);
+            border-radius: 1.25rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 1.25rem;
+            text-align: center;
+            gap: 1rem;
+            z-index: 30;
+            box-shadow: 0 0 35px rgba(14, 165, 233, 0.45);
+            border: 1px solid rgba(56, 189, 248, 0.55);
+        }
+
+        .fullscreen-blue-mode .modal-overlay { border-radius: 0; }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.72rem;
+            margin-top: 0.2rem;
+            text-align: left;
+        }
+        th, td {
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            padding: 0.3rem;
+        }
+        th { background-color: rgba(31, 41, 55, 0.85); color: #38bdf8; }
+    </style>
+</head>
+<body id="main-body-tag">
+
+    <div class="main-container theme-new" id="game-container">
+        
+        <!-- HEADER / TITLE -->
+        <div class="text-center mb-3" id="portal-main-title">
+            <h1 style="font-size: 1.35rem; font-weight: 900; color: #38bdf8; letter-spacing: 0.05em;">⚡ DIGITAL MASTERY ARENA ⚡</h1>
+            <p class="text-gray" style="font-size: 0.75rem; margin-top: 0.1rem;">Professional Assessment Portal</p>
+        </div>
+
+        <!-- STEP 1: WELCOME & 3 TABS SELECTION -->
+        <div id="welcome-screen" class="space-y-3">
+            <div class="card-box">
+                <h2 style="font-size: 1rem; font-weight: bold; color: #fff; margin-bottom: 0.5rem;">Access Portal 🚪</h2>
+                
+                <!-- 3 Navigation Tabs -->
+                <div style="display: flex; gap: 0.35rem; margin-bottom: 0.8rem;">
+                    <button onclick="switchTab('new')" id="tab-new-btn" class="btn-primary" style="font-size: 0.72rem; padding: 0.4rem 0.2rem; background-color: #10b981; color: white;">New Reg</button>
+                    <button onclick="switchTab('login')" id="tab-login-btn" class="btn-secondary" style="font-size: 0.72rem; padding: 0.4rem 0.2rem; margin-top: 0;">Roll Login</button>
+                    <button onclick="switchTab('admin')" id="tab-admin-btn" class="btn-secondary" style="font-size: 0.72rem; padding: 0.4rem 0.2rem; margin-top: 0;">Admin Login</button>
+                </div>
+
+                <!-- 1. NEW USER FORM -->
+                <div id="new-user-box">
+                    <p class="text-gray" style="font-size: 0.7rem; margin-bottom: 0.5rem;">First name & Last name likh kar apna Roll Number generate karein:</p>
+                    <input type="text" id="first-name" placeholder="First Name (e.g. Sonu)" class="input-box">
+                    <input type="text" id="last-name" placeholder="Last Name (e.g. Singh)" class="input-box">
+                    <button onclick="generateRollNumber()" class="btn-primary" style="background-color: #10b981; color: white; margin-bottom: 0.4rem;">
+                        Generate Roll Number 🆔
+                    </button>
+                </div>
+
+                <!-- 2. EXISTING USER LOGIN FORM -->
+                <div id="login-user-box" class="hidden">
+                    <p class="text-gray" style="font-size: 0.7rem; margin-bottom: 0.5rem;">Apna Roll Number daal kar login karein:</p>
+                    <input type="text" id="login-roll" placeholder="Enter Roll Number (e.g. DMA-1001)" class="input-box">
+                    <button onclick="verifyAndLogin()" class="btn-primary" style="background-color: #06b6d4; color: #030712; margin-bottom: 0.4rem;">
+                        Verify & Login 🚀
+                    </button>
+                </div>
+
+                <!-- 3. ADMIN LOGIN SECTION -->
+                <div id="admin-login-box" class="hidden">
+                    <p class="text-gray" style="font-size: 0.7rem; margin-bottom: 0.5rem;">Admin Control Panel Access (Secured):</p>
+                    <input type="email" id="admin-email-input" placeholder="Admin Email ID" class="input-box">
+                    <input type="password" id="admin-pass-input" placeholder="Admin Password" class="input-box">
+                    <button onclick="verifyAdminLogin()" class="btn-primary" style="background-color: #d97706; color: white; margin-bottom: 0.4rem;">
+                        Open Admin Dashboard 🛡️
+                    </button>
+                </div>
+
+                <!-- Back to Hub Button -->
+                <button onclick="goToHub()" class="btn-secondary" style="background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.2); color: #38bdf8; font-size: 0.78rem; padding: 0.5rem; margin-top: 0.3rem;">
+                    🏠 Back to Hub
+                </button>
+            </div>
+        </div>
+
+        <!-- USER DASHBOARD (AFTER LOGIN - TRANSPARENT BLUE FULL SCREEN) -->
+        <div id="user-dashboard-screen" class="hidden space-y-2" style="width: 100%; display: flex; flex-direction: column; align-items: center;">
+            
+            <!-- Top Greeting & Details -->
+            <div style="text-align: center; width: 100%; padding-top: 0.1rem;">
+                <h2 id="dash-welcome-title" class="welcome-3d-title">WELCOME, SONU</h2>
+                <div class="welcome-underline"></div>
+                <p style="font-size: 0.75rem; color: #bae6fd; font-weight: 600; margin-bottom: 0.1rem;">Thank You For Join Us</p>
+                <h3 style="font-size: 0.9rem; font-weight: 800; color: #facc15; letter-spacing: 0.05em; margin-bottom: 0.4rem;">DIGITAL MARKETING ARENA</h3>
+            </div>
+
+            <!-- Dashboard Center Elements with Glass Level Panel & 3D Start Button -->
+            <div style="width: 100%; display: flex; flex-direction: column; gap: 0.5rem; align-items: center;">
+                
+                <!-- Glass Level Display Panel -->
+                <div class="glass-level-panel">
+                    <span style="font-size: 0.78rem; font-weight: 700; color: #e0f2fe;">Current Challenger Level:</span>
+                    <span style="font-size: 1rem; font-weight: 900; color: #38bdf8;" id="dashboard-level-display">Level 1 / 100</span>
+                </div>
+
+                <!-- 3D Start Question Button Square Box -->
+                <div class="start-question-square-box" onclick="startTestWithAnimation()">
+                    <div style="font-size: 1.25rem; margin-bottom: 0.1rem;">⚡</div>
+                    <h3 style="font-size: 1.05rem; font-weight: 900; color: #ffffff; text-shadow: 0 2px 4px rgba(0,0,0,0.3);">START QUESTION</h3>
+                    <p style="font-size: 0.68rem; color: #bae6fd; margin-top: 0.05rem;">Tap here to begin your assessment challenge</p>
+                </div>
+            </div>
+
+            <!-- Score Tracking Panel -->
+            <div style="width: 100%; display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.35rem;">
+                <div style="background: rgba(16, 185, 129, 0.18); backdrop-filter: blur(8px); border: 1px solid rgba(16, 185, 129, 0.4); border-radius: 0.5rem; padding: 0.4rem; text-align: center;">
+                    <span style="font-size: 0.65rem; color: #6ee7b7; display: block; font-weight: 600;">Right ✓</span>
+                    <span id="stat-right-count" style="font-size: 0.95rem; font-weight: 900; color: #34d399;">0</span>
+                </div>
+                <div style="background: rgba(239, 68, 68, 0.18); backdrop-filter: blur(8px); border: 1px solid rgba(239, 68, 68, 0.4); border-radius: 0.5rem; padding: 0.4rem; text-align: center;">
+                    <span style="font-size: 0.65rem; color: #fca5a5; display: block; font-weight: 600;">Wrong ✗</span>
+                    <span id="stat-wrong-count" style="font-size: 0.95rem; font-weight: 900; color: #f87171;">0</span>
+                </div>
+                <div style="background: rgba(245, 158, 11, 0.18); backdrop-filter: blur(8px); border: 1px solid rgba(245, 158, 11, 0.4); border-radius: 0.5rem; padding: 0.4rem; text-align: center;">
+                    <span style="font-size: 0.65rem; color: #fcd34d; display: block; font-weight: 600;">Skipped ⤹</span>
+                    <span id="stat-skip-count" style="font-size: 0.95rem; font-weight: 900; color: #fbbf24;">0</span>
+                </div>
+            </div>
+
+            <!-- Hall Of Fame / Leaderboard Panel -->
+            <div class="hall-of-fame-panel">
+                <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(56, 189, 248, 0.3); padding-bottom: 0.2rem; margin-bottom: 0.2rem;">
+                    <h4 style="font-size: 0.75rem; font-weight: 800; color: #38bdf8;">🏆 Hall of Fame Arena Leaderboard</h4>
+                    <span style="font-size: 0.6rem; color: #9ca3af;" id="hall-user-id">ID: DMA-000</span>
+                </div>
+                <div style="max-height: 5.5rem; overflow-y: auto;">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Rank</th>
+                                <th>Name</th>
+                                <th>Score</th>
+                                <th>Lvl</th>
+                            </tr>
+                        </thead>
+                        <tbody id="hall-of-fame-tbody">
+                            <!-- Populated dynamically -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Back to Hub Switch Button (Placed inside portal/dashboard for easy exit) -->
+            <button onclick="goToHub()" class="btn-secondary" style="background: rgba(14, 165, 233, 0.25); border: 1px solid rgba(56, 189, 248, 0.5); color: #38bdf8; font-size: 0.75rem; padding: 0.45rem; margin-top: 0.1rem; font-weight: 800;">
+                🔙 Back to Hub
+            </button>
+
+            <button onclick="logoutToHome()" class="btn-secondary" style="background-color: rgba(0,0,0,0.35); border: 1px solid rgba(255,255,255,0.15); font-size: 0.7rem; padding: 0.35rem; margin-top: 0.1rem;">
+                🚪 Logout / Return to Home
+            </button>
+        </div>
+
+        <!-- STEP 2: QUIZ / TEST INTERFACE -->
+        <div id="quiz-screen" class="hidden" style="width: 100%; display: flex; flex-direction: column; gap: 0.75rem; align-items: center;">
+            <div style="width: 100%; max-width: 32rem; display: flex; flex-direction: column; gap: 0.75rem;">
+                <div class="quiz-header">
+                    <div>
+                        <span id="profile-name-display" style="color: #38bdf8; font-weight: bold;"></span>
+                        <div style="font-size: 0.65rem; color: #9ca3af;" id="challenger-id-display">ID: DMA-000</div>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 0.5rem;">
+                        <span class="badge-level">
+                            Lvl: <span id="level-val">1</span>/100
+                        </span>
+                        <span style="color: #facc15; font-weight: bold;">
+                            Score: <span id="score-val">0</span>
+                        </span>
+                    </div>
+                </div>
+
+                <div style="background: rgba(14, 165, 233, 0.15); backdrop-filter: blur(10px); border: 1px solid rgba(56, 189, 248, 0.35); border-radius: 0.6rem; padding: 0.4rem; text-align: center;">
+                    <h3 style="font-size: 0.85rem; font-weight: 800; color: #38bdf8;">🔥 Digital Marketing Mastery 🔥</h3>
+                </div>
+
+                <div class="timer-track">
+                    <div id="timer-bar" class="timer-anim"></div>
+                </div>
+
+                <!-- 3D Glass Design Card Box for Questions & Answers -->
+                <div class="card-box" style="text-align: left; position: relative; padding: 0.85rem; min-height: unset; max-width: 100%; border: 2px solid rgba(56, 189, 248, 0.4); box-shadow: 0 15px 40px rgba(0,0,0,0.5), inset 0 2px 8px rgba(255,255,255,0.25);">
+                    <div style="margin-bottom: 0.5rem; display: flex; justify-content: space-between; align-items: center;">
+                        <span id="topic-badge" style="background-color: rgba(8, 51, 68, 0.9); color: #67e8f9; border: 1px solid #155e75; font-size: 0.6rem; font-weight: 600; padding: 0.15rem 0.5rem; border-radius: 9999px; text-transform: uppercase;">Topic: Digital Marketing</span>
+                        <span id="question-number-badge" style="font-size: 0.7rem; font-weight: bold; color: #9ca3af;">Q 1</span>
+                    </div>
+
+                    <h2 id="question-text" style="font-size: 0.95rem; font-weight: 700; color: #38bdf8; margin-bottom: 0.75rem; line-height: 1.35;">Loading Question...</h2>
+                    
+                    <div id="options-container" style="display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 0.6rem;"></div>
+
+                    <!-- Skip Question Button -->
+                    <button onclick="handleSkipQuestion()" style="width: 100%; background: rgba(245, 158, 11, 0.2); border: 1px solid rgba(245, 158, 11, 0.5); color: #fcd34d; font-weight: 700; padding: 0.45rem; border-radius: 0.5rem; cursor: pointer; font-size: 0.75rem; transition: all 0.2s; display: flex; align-items: center; justify-content: center; gap: 0.3rem;">
+                        <span>⏭️ Skip This Question</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- STEP 3: IDENTITY CONFIRMATION MODAL -->
+        <div id="verify-modal" class="hidden modal-overlay">
+            <div style="width: 3.2rem; height: 3.2rem; border-radius: 50%; background-color: rgba(34, 211, 238, 0.2); border: 1px solid #38bdf8; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; box-shadow: 0 0 15px rgba(56, 189, 248, 0.4);">
+                👤
+            </div>
+            <div>
+                <h3 style="font-size: 1.1rem; font-weight: 900; color: #38bdf8; letter-spacing: 0.05em;">IDENTITY CONFIRMATION</h3>
+                <p class="text-gray" style="font-size: 0.7rem; margin-top: 0.2rem;">Kya ye aap hi hain?</p>
+            </div>
+            
+            <div style="width: 100%; background-color: rgba(17, 24, 39, 0.7); border: 1px solid rgba(255,255,255,0.1); border-radius: 0.5rem; padding: 0.8rem; text-align: center; max-width: 20rem;">
+                <span class="text-gray" style="font-size: 0.7rem; display: block;">Verified Challenger Name:</span>
+                <span id="verify-modal-name" style="color: #facc15; font-weight: bold; font-size: 1rem; display: block; margin: 0.2rem 0;">-</span>
+                <div style="display: flex; align-items: center; justify-content: center; gap: 0.5rem; margin-top: 0.4rem;">
+                    <span id="verify-modal-roll" style="color: #67e8f9; font-size: 0.8rem; font-weight: bold;">ID: DMA-000</span>
+                    <button onclick="copyRollNumber()" style="background: rgba(31,41,55,0.8); color: #38bdf8; border: 1px solid #374151; padding: 0.2rem 0.5rem; border-radius: 0.3rem; font-size: 0.7rem; cursor: pointer;">Copy ID 📋</button>
+                </div>
+            </div>
+
+            <div style="display: flex; gap: 0.5rem; width: 100%; max-width: 18rem; flex-direction: column;">
+                <button onclick="confirmIdentityAndLogin()" class="btn-primary" style="padding: 0.65rem; background-color: #06b6d4; color: #030712;">
+                    Yes, It's Me! Proceed 🚀
+                </button>
+                <button onclick="closeVerifyModal()" style="background-color: rgba(55,65,81,0.7); color: #f3f4f6; font-weight: 700; padding: 0.6rem; border-radius: 0.5rem; border: none; cursor: pointer; font-size: 0.8rem; width: 100%;">
+                    Cancel / Not Me ❌
+                </button>
+            </div>
+        </div>
+
+        <!-- REGISTRATION SUCCESS MODAL -->
+        <div id="reg-success-modal" class="hidden modal-overlay">
+            <div style="width: 3.2rem; height: 3.2rem; border-radius: 50%; background-color: rgba(16, 185, 129, 0.2); border: 1px solid #10b981; display: flex; align-items: center; justify-content: center; font-size: 1.4rem;">
+                🎉
+            </div>
+            <div>
+                <h3 style="font-size: 1.1rem; font-weight: 900; color: #10b981;">REGISTRATION SUCCESSFUL</h3>
+                <p class="text-gray" style="font-size: 0.7rem; margin-top: 0.2rem;">Apna Roll Number yahan se copy kar sakte hain:</p>
+            </div>
+            
+            <div style="width: 100%; background-color: rgba(17, 24, 39, 0.7); border: 1px solid rgba(255,255,255,0.1); border-radius: 0.5rem; padding: 0.8rem; text-align: center; max-width: 20rem;">
+                <div style="display: flex; align-items: center; justify-content: center; gap: 0.5rem;">
+                    <span id="new-generated-roll" style="color: #67e8f9; font-size: 1rem; font-weight: bold;">DMA-0000</span>
+                    <button onclick="copyNewGeneratedRoll()" style="background: rgba(31,41,55,0.8); color: #10b981; border: 1px solid #374151; padding: 0.3rem 0.6rem; border-radius: 0.3rem; font-size: 0.75rem; cursor: pointer; font-weight: bold;">Copy ID 📋</button>
+                </div>
+            </div>
+
+            <button onclick="proceedAfterRegistration()" class="btn-primary" style="padding: 0.65rem; background-color: #10b981; color: white; max-width: 18rem;">
+                Enter Dashboard ⚡
+            </button>
+        </div>
+
+        <!-- GENERATING QUESTION ANIMATION MODAL -->
+        <div id="generating-modal" class="hidden modal-overlay" style="background: rgba(15, 23, 42, 0.95);">
+            <div style="width: 4rem; height: 4rem; border: 4px solid rgba(56, 189, 248, 0.3); border-top: 4px solid #38bdf8; border-radius: 50%; animation: spin 1s linear infinite;"></div>
+            <div>
+                <h3 style="font-size: 1.2rem; font-weight: 900; color: #38bdf8; letter-spacing: 0.05em;">GENERATING YOUR QUESTION...</h3>
+                <p class="text-gray" style="font-size: 0.75rem; margin-top: 0.3rem; color: #bae6fd;">Please wait while we set up your challenge arena.</p>
+            </div>
+        </div>
+
+        <!-- STEP 4: CHECKPOINT MODAL -->
+        <div id="checkpoint-modal" class="hidden modal-overlay" style="background: rgba(15, 23, 42, 0.95);">
+            <div style="width: 3.2rem; height: 3.2rem; border-radius: 50%; background-color: rgba(56, 189, 248, 0.2); border: 1px solid #38bdf8; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; box-shadow: 0 0 15px rgba(56, 189, 248, 0.4);">
+                🔥
+            </div>
+            <div>
+                <h3 style="font-size: 1.1rem; font-weight: 900; color: #38bdf8; letter-spacing: 0.05em;">5 QUESTIONS COMPLETED!</h3>
+                <p class="text-gray" style="font-size: 0.7rem; margin-top: 0.2rem; max-width: 18rem; color: #bae6fd;">Mandatory 5-question limit reached. You can now continue or return to dashboard.</p>
+            </div>
+            
+            <div style="width: 100%; max-width: 20rem; background-color: rgba(17, 24, 39, 0.7); border: 1px solid rgba(255,255,255,0.1); border-radius: 0.5rem; padding: 0.6rem; display: flex; justify-content: space-around; font-size: 0.75rem;">
+                <div>
+                    <span class="text-gray" style="display: block;">Score</span>
+                    <span id="ckpt-score" style="color: #facc15; font-weight: bold; font-size: 0.95rem;">0 pts</span>
+                </div>
+                <div style="border-right: 1px solid rgba(255,255,255,0.1);"></div>
+                <div>
+                    <span class="text-gray" style="display: block;">Level</span>
+                    <span id="ckpt-level" style="color: #38bdf8; font-weight: bold; font-size: 0.95rem;">1/100</span>
+                </div>
+            </div>
+
+            <div style="display: flex; gap: 0.5rem; width: 100%; max-width: 18rem; flex-direction: column;">
+                <button onclick="resumeQuiz()" class="btn-primary" style="padding: 0.65rem; background-color: #059669; color: white;">
+                    Continue Playing ⚡
+                </button>
+                <button onclick="exitToDashboard()" style="background-color: rgba(55,65,81,0.8); color: white; font-weight: 800; padding: 0.65rem; border-radius: 0.5rem; border: none; cursor: pointer; font-size: 0.8rem; width: 100%;">
+                    Back to Dashboard 🏠
+                </button>
+            </div>
+        </div>
+
+        <!-- STEP 5: SECURED ADMIN DASHBOARD MODAL -->
+        <div id="admin-modal" class="hidden modal-overlay" style="padding: 1rem; align-items: center; border-color: rgba(245, 158, 11, 0.6); box-shadow: 0 0 30px rgba(245, 158, 11, 0.4);">
+            <div style="width: 100%; max-width: 32rem; display: flex; flex-direction: column; gap: 0.5rem;">
+                <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 0.5rem;">
+                    <h3 style="font-size: 1rem; font-weight: bold; color: #facc15;">🛡️ Admin Report & Control Panel</h3>
+                    <button onclick="closeAdminPanel()" style="background:none; border:none; color:#ef4444; font-weight:bold; cursor:pointer; font-size:1rem;">✕ Close</button>
+                </div>
+                
+                <div id="admin-live-stats" style="background: rgba(17, 24, 39, 0.7); padding: 0.5rem; border-radius: 0.5rem; font-size: 0.75rem; border: 1px solid rgba(255,255,255,0.1); text-align: left;">
+                    <!-- Live Stats filled dynamically -->
+                </div>
+
+                <p style="font-size: 0.75rem; font-weight: bold; color: #38bdf8; text-align: left;">All Joined Members List & Report:</p>
+                <div style="max-height: 14rem; overflow-y: auto;">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Roll No</th>
+                                <th>Name</th>
+                                <th>Score</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="admin-table-body">
+                            <!-- Populated dynamically -->
+                        </tbody>
+                    </table>
+                </div>
+                <button onclick="clearAllData()" style="background-color: rgba(127, 29, 29, 0.8); color: #fca5a5; border:none; padding: 0.4rem; border-radius: 0.3rem; font-size: 0.75rem; cursor:pointer;">Reset All Player Records 🗑️</button>
+            </div>
+        </div>
+
+    </div>
+
+    <style>
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+
+    <!-- SCRIPT ENGINE -->
+    <script>
+        const questionBank = [
+            { q: "Digital marketing campaign chalane ka main objective kya hota hai?", options: ["Road par physical products sell karna", "Internet ke zariye brand ko promote karna aur audience connect karke sales generate karna", "Daily offline newspaper print karna", "Decorative billboards banana"], answer: 1, topic: "Digital Marketing Basics" },
+            { q: "Paid ad campaigns me 'CPC' ka kya matlab hota hai?", options: ["Cost Per Click", "Customer Purchase Cost", "Click Per Conversion", "Cost Per Customer"], answer: 0, topic: "Paid Advertising" },
+            { q: "Digital ads me 'CTR' (Click-Through Rate) kya measure karne ke liye use hota hai?", options: ["Total budget kitna spend hua", "Total impressions ke mukable kitne logo ne ad par click kiya", "Website server ki speed", "Negative comments kitne aaye"], answer: 1, topic: "Paid Advertising / Metrics" },
+            { q: "Business glossary me 'B2B' ka full form kya hota hai?", options: ["Brand to Buyer", "Business to Business", "Backlink to Blog", "Browser to Bot"], answer: 1, topic: "Digital Glossary" },
+            { q: "Marketing strategy me 'ROI' kya indicate karta hai?", options: ["Return on Investment", "Rate of Internet Income", "Reach over Impressions", "Revenue on Infrastructure"], answer: 0, topic: "Digital Marketing Basics" },
+            { q: "Companies dwara use ki jaane wali 'CRM' software ka full form kya hai?", options: ["Content Resource Manager", "Customer Relationship Management", "Conversion Rate Method", "Campaign Risk Model"], answer: 1, topic: "Digital Tools & Glossary" },
+            { q: "'Call to Action' (CTA) button kya hota hai?", options: ["Ek customer support phone line", "Ek prompt jo users ko turant action lene ke liye encourage karta hai jaise 'Buy Now'", "Ek automated welcome email template", "Ek billing invoice generator"], answer: 1, topic: "Conversion Optimization" },
+            { q: "Performance tracking me 'KPI' ka kya matlab hota hai?", options: ["Key Performance Indicator", "Keyword Page Index", "Knowledge Process Integration", "Key Public Interaction"], answer: 0, topic: "Analytics & Tracking" },
+            { q: "Website के लिए SEO karne ka core purpose kya hota hai?", options: ["Social media se sasta traffic buy karna", "Ads ke bina organic visibility aur search rankings improve karna", "Heavy graphics design karna", "Customer chats manage karna"], answer: 1, topic: "SEO (Search Engine Optimization)" },
+            { q: "Inme se kise ek crucial 'On-Page SEO' factor maana jata hai?", options: ["High authority external sites se backlinks", "Page titles, headings aur content me proper keywords place karna", "Social media profile shares", "Sirf physical hosting server location"], answer: 1, topic: "On-Page SEO" },
+            { q: "SEO terminology me 'Backlinks' kise kehte hain?", options: ["Dusri websites se aapki website par point karne wale inbound links", "Website footer ke andar broken links", "Internal navigation links", "Deleted post recovery links"], answer: 0, topic: "Off-Page SEO" },
+            { q: "Search engines me 'SERP' ka full form kya hota hai?", options: ["Search Engine Result Page", "Site Error Reporting Program", "Server Execution Resource Protocol", "Social Engagement Rating Point"], answer: 0, topic: "SEO Basics" },
+            { q: "Organic search performance track karne ke liye Google officially konsa free tool deta hai?", options: ["Google Analytics", "Google Search Console", "Google Ads Manager", "Google Trends Studio"], answer: 1, topic: "SEO Tools" },
+            { q: "Web articles me 'Keyword Stuffing' ka kya matlab hota hai?", options: ["Relevant keywords ko naturally add karna", "Search ranks manipulate karne ke liye web content me unnaturally keywords overload karna", "Low competition keywords research karna", "CSS code me keywords hide karna"], answer: 1, topic: "SEO Guidelines" },
+            { q: "Social media platforms par 'Organic Reach' kya hoti hai?", options: ["Ads par paise spend kiye bina naturally mili hui reach", "Strictly sponsored ad budgets se earn ki gayi reach", "Third-party services se buy kiye gaye followers", "Automated email blasts se driven traffic"], answer: 0, topic: "Social Media Marketing" },
+            { q: "Professional networking aur B2B marketing ke liye primary konsa social platform use hota hai?", options: ["TikTok", "LinkedIn", "Instagram", "Snapchat"], answer: 1, topic: "Social Media Marketing" },
+            { q: "Modern social media marketing me 'UGC' ka kya matlab hota hai?", options: ["User Generated Content", "Unfiltered Global Commerce", "Universal Graphics Converter", "Unique Group Chat"], answer: 0, topic: "Content Strategy" },
+            { q: "Posts par hashtags (#) use karne ka main purpose kya hota hai?", options: ["User passwords secure karna", "Content ko categorize karna aur interested users ke liye discoverable banana", "Video buffer time fast karna", "Spam comments automatically block karna"], answer: 1, topic: "Social Media Tactics" },
+            { q: "Content Marketing ke piche ki core philosophy kya hoti hai?", options: ["Sabhi ko aggressively products pitch karte rehna", "Ek defined audience ko attract, educate aur retain karne ke liye valuable aur relevant content dena", "Products ke liye fake reviews buy karna", "Affiliate links ke sath forums spam karna"], answer: 1, topic: "Content Marketing" },
+            { q: "Marketing funnels me 'Lead Magnet' ka kya matlab hota hai?", options: ["Orders ke sath ship kiya gaya physical magnet", "User ki contact details ya email exchange me di jane wali free valuable item ya service", "Website visitors track karne ka tool", "Ek email spam filter"], answer: 1, topic: "Content & Lead Generation" },
+            { q: "'Evergreen Content' kis tarah ka content hota hai?", options: ["Christmas trees ya plants par content", "Aisa content jo lambe samay tak readers ke liye relevant aur fresh rehta hai", "Aisa content jo 24 hours ke baad expire ho jata hai", "Daily breaking news articles"], answer: 1, topic: "Content Strategy" },
+            { q: "Digital ads me 'Retargeting' (Remarketing) kya hota hai?", options: ["Randomly bilkul naye cold audiences ko target karna", "Un users ko targeted ads dikhana jo pehle aapki website par aaye the ya brand ke sath interact kiye the", "Apne ad campaign budget ko daily reset karna", "Phone contacts ke basis par logo ko target karna"], answer: 1, topic: "Paid Advertising" },
+            { q: "Paid marketing performance me 'ROAS' ka full form kya hota hai?", options: ["Return on Ad Spend", "Rate of Active Subscribers", "Reach Over Ad Space", "Revenue on App Store"], answer: 0, topic: "Paid Advertising / Metrics" },
+            { q: "Ad campaigns me 'A/B Testing' method kya hoti hai?", options: ["Yeh dekhne ke liye ki konsa better perform karta hai, ek ad ya landing page ke do variations run karna", "Software coding bugs test karna", "Target keywords ko alphabetize karna", "Billing history audit karna"], answer: 0, topic: "Paid Ads & Optimization" },
+            { q: "Agar kisi marketing campaign me high traffic hai par zero conversions hain, toh analyze karne ka sabse logical first step kya hoga?", options: ["Turant ad budget double kar dena", "Landing page UX, offer relevance aur Call-to-Action clarity check karna", "Sabhi social media accounts delete kar dena", "Company logo change kar dena"], answer: 1, topic: "Critical Thinking" },
+            { q: "Instagram, WhatsApp aur Facebook jaise popular platforms ko konsi company own karti hai?", options: ["Google", "Microsoft", "Meta", "Apple"], answer: 2, topic: "General Knowledge" },
+            { q: "Kisi bhi modern website ya landing page ke liye 'Mobile Responsiveness' kyu critical hoti hai?", options: ["Kyunki zyadaftar internet users smartphones use karke browse aur shop karte hain", "Kyunki search engines desktop websites ban karte hain", "High-speed internet consumption kam karne ke liye", "Yeh sirf ek optional design trend hai"], answer: 0, topic: "Critical Thinking / Web Strategy" },
+            { q: "Digital world me 'Data Privacy' primarily kis chiz ko protect karti hai?", options: ["Server hardware ko overheat hone se", "Personal user information aur confidential data ko unauthorized access se", "Wi-Fi router signals ko", "Website loading speed ko"], answer: 1, topic: "General Knowledge & Security" },
+            { q: "Agar aapka competitor aapke target keyword ke liye Google par #1 rank kar raha hai, toh smart long-term strategy kya hogi?", options: ["Unki website ka code poori tarah copy karna", "Unse zyada high-quality, detailed content banana aur stronger authority backlinks build karna", "Marketing bilkul stop kar dena", "Police me unke domain ki report karna"], answer: 1, topic: "Critical Thinking / SEO Strategy" }
+        ];
+
+        let activeQuestions = [];
+        let currentIndex = 0;
+        let score = 0;
+        let level = 1;
+        let correctCount = 0;
+        let wrongCount = 0;
+        let skipCount = 0;
+        let questionSequenceNumber = 1;
+        let consecutiveCorrect = 0;
+        let consecutiveWrong = 0;
+        let currentRollNo = "";
+        let currentFullName = "";
+        let pendingLoginUser = null;
+        let questionsAnsweredInSession = 0;
+        let timerInterval = null;
+
+        // Function to go back to main Hub/Website
+        function goToHub() {
+            // Yahan par aap apne main hub ya parent website ka URL ya link daal sakte hain
+            window.history.back();
+        }
+
+        function switchTab(mode) {
+            const newBox = document.getElementById("new-user-box");
+            const loginBox = document.getElementById("login-user-box");
+            const adminBox = document.getElementById("admin-login-box");
+            
+            const newBtn = document.getElementById("tab-new-btn");
+            const loginBtn = document.getElementById("tab-login-btn");
+            const adminBtn = document.getElementById("tab-admin-btn");
+            
+            const container = document.getElementById("game-container");
+
+            newBox.classList.add("hidden");
+            loginBox.classList.add("hidden");
+            adminBox.classList.add("hidden");
+            
+            newBtn.className = "btn-secondary";
+            newBtn.style.backgroundColor = "rgba(55, 65, 81, 0.6)";
+            newBtn.style.color = "#f3f4f6";
+
+            loginBtn.className = "btn-secondary";
+            loginBtn.style.backgroundColor = "rgba(55, 65, 81, 0.6)";
+            loginBtn.style.color = "#f3f4f6";
+
+            adminBtn.className = "btn-secondary";
+            adminBtn.style.backgroundColor = "rgba(55, 65, 81, 0.6)";
+            adminBtn.style.color = "#f3f4f6";
+
+            container.classList.remove("theme-new", "theme-login", "theme-admin");
+
+            if(mode === 'new') {
+                newBox.classList.remove("hidden");
+                newBtn.style.backgroundColor = "#10b981";
+                newBtn.style.color = "white";
+                container.classList.add("theme-new");
+            } else if(mode === 'login') {
+                loginBox.classList.remove("hidden");
+                loginBtn.style.backgroundColor = "#06b6d4";
+                loginBtn.style.color = "#030712";
+                container.classList.add("theme-login");
+            } else if(mode === 'admin') {
+                adminBox.classList.remove("hidden");
+                adminBtn.style.backgroundColor = "#d97706";
+                adminBtn.style.color = "white";
+                container.classList.add("theme-admin");
+            }
+        }
+
+        function shuffleArray(array) {
+            let arr = [...array];
+            for (let i = arr.length - 1; i > 0; i--) {
+                let j = Math.floor(Math.random() * (i + 1));
+                [arr[i], arr[j]] = [arr[j], arr[i]];
+            }
+            return arr;
+        }
+
+        function generateRollNumber() {
+            let fName = document.getElementById("first-name").value.trim();
+            let lName = document.getElementById("last-name").value.trim();
+            
+            if(!fName || !lName) {
+                alert("Please enter both First Name and Last Name!");
+                return;
+            }
+
+            let fullNameEntered = `${fName} ${lName}`.toLowerCase();
+            let allProfiles = JSON.parse(localStorage.getItem("digitalQuizProfiles")) || {};
+
+            for (let roll in allProfiles) {
+                let existingUser = allProfiles[roll];
+                let existingName = (existingUser && existingUser.fullName) ? existingUser.fullName.toLowerCase() : "";
+                
+                if (existingName === fullNameEntered) {
+                    alert(`⚠️ Your Name Already Exists!\n\n"${fName} ${lName}" naam se pehle hi roll number (${roll}) generate ho chuka hai.`);
+                    return;
+                }
+            }
+            
+            let randomNum = Math.floor(1000 + Math.random() * 9000);
+            let rollNo = `DMA-${randomNum}`;
+            
+            currentFullName = `${fName} ${lName}`;
+            currentRollNo = rollNo;
+            score = 0;
+            level = 1;
+            correctCount = 0;
+            wrongCount = 0;
+            skipCount = 0;
+
+            allProfiles[rollNo] = {
+                fullName: currentFullName,
+                rollNo: rollNo,
+                score: score,
+                level: level,
+                correct: correctCount,
+                wrong: wrongCount,
+                skip: skipCount
+            };
+            localStorage.setItem("digitalQuizProfiles", JSON.stringify(allProfiles));
+
+            document.getElementById("new-generated-roll").innerText = rollNo;
+            document.getElementById("reg-success-modal").classList.remove("hidden");
+        }
+
+        function copyNewGeneratedRoll() {
+            let roll = document.getElementById("new-generated-roll").innerText;
+            navigator.clipboard.writeText(roll).then(() => {
+                alert("Roll Number Copied: " + roll);
+            });
+        }
+
+        function proceedAfterRegistration() {
+            document.getElementById("reg-success-modal").classList.add("hidden");
+            openDashboardScreen();
+        }
+
+        function verifyAndLogin() {
+            let rollInput = document.getElementById("login-roll").value.trim().toUpperCase();
+            if(!rollInput) {
+                alert("Please enter your Roll Number!");
+                return;
+            }
+
+            let allProfiles = JSON.parse(localStorage.getItem("digitalQuizProfiles")) || {};
+            if(!allProfiles[rollInput]) {
+                alert("Roll Number not found! Please register first as a new user.");
+                return;
+            }
+
+            pendingLoginUser = allProfiles[rollInput];
+            
+            document.getElementById("verify-modal-name").innerText = pendingLoginUser.fullName;
+            document.getElementById("verify-modal-roll").innerText = `ID: ${pendingLoginUser.rollNo}`;
+            document.getElementById("verify-modal").classList.remove("hidden");
+        }
+
+        function copyRollNumber() {
+            if(pendingLoginUser) {
+                navigator.clipboard.writeText(pendingLoginUser.rollNo).then(() => {
+                    alert("Roll Number Copied: " + pendingLoginUser.rollNo);
+                });
+            }
+        }
+
+        function closeVerifyModal() {
+            document.getElementById("verify-modal").classList.add("hidden");
+            pendingLoginUser = null;
+        }
+
+        function confirmIdentityAndLogin() {
+            if(!pendingLoginUser) return;
+
+            currentRollNo = pendingLoginUser.rollNo;
+            currentFullName = pendingLoginUser.fullName;
+            score = pendingLoginUser.score || 0;
+            level = pendingLoginUser.level || 1;
+            correctCount = pendingLoginUser.correct || 0;
+            wrongCount = pendingLoginUser.wrong || 0;
+            skipCount = pendingLoginUser.skip || 0;
+
+            document.getElementById("verify-modal").classList.add("hidden");
+            openDashboardScreen();
+        }
+
+        function openDashboardScreen() {
+            let firstNameOnly = currentFullName.split(" ")[0].toUpperCase();
+            document.getElementById("dash-welcome-title").innerText = `WELCOME, ${firstNameOnly}`;
+            document.getElementById("hall-user-id").innerText = `ID: ${currentRollNo}`;
+            
+            document.getElementById("dashboard-level-display").innerText = `Level ${level} / 100`;
+            document.getElementById("stat-right-count").innerText = correctCount;
+            document.getElementById("stat-wrong-count").innerText = wrongCount;
+            document.getElementById("stat-skip-count").innerText = skipCount;
+
+            document.getElementById("main-body-tag").classList.add("blue-bg-active");
+            document.getElementById("game-container").classList.add("fullscreen-blue-mode");
+            document.getElementById("portal-main-title").style.display = "none";
+            document.getElementById("welcome-screen").classList.add("hidden");
+            document.getElementById("user-dashboard-screen").classList.remove("hidden");
+
+            loadHallOfFameLeaderboard();
+        }
+
+        function loadHallOfFameLeaderboard() {
+            let allProfiles = JSON.parse(localStorage.getItem("digitalQuizProfiles")) || {};
+            let profilesArr = Object.values(allProfiles);
+            
+            profilesArr.sort((a, b) => (b.score || 0) - (a.score || 0));
+            let topList = profilesArr.slice(0, 5);
+
+            let tbody = document.getElementById("hall-of-fame-tbody");
+            tbody.innerHTML = "";
+
+            if(topList.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; color:#9ca3af;">No records found yet.</td></tr>`;
+            } else {
+                topList.forEach((p, idx) => {
+                    let fNameOnly = p.fullName ? p.fullName.split(" ")[0] : "";
+                    tbody.innerHTML += `
+                        <tr>
+                            <td><b>#${idx + 1}</b></td>
+                            <td>${fNameOnly}</td>
+                            <td style="color:#facc15; font-weight:bold;">${p.score || 0}</td>
+                            <td style="color:#38bdf8;">${p.level || 1}</td>
+                        </tr>
+                    `;
+                });
+            }
+        }
+
+        function logoutToHome() {
+            document.getElementById("main-body-tag").classList.remove("blue-bg-active");
+            document.getElementById("game-container").classList.remove("fullscreen-blue-mode");
+            document.getElementById("portal-main-title").style.display = "block";
+            document.getElementById("user-dashboard-screen").classList.add("hidden");
+            document.getElementById("welcome-screen").classList.remove("hidden");
+        }
+
+        function startTestWithAnimation() {
+            document.getElementById("generating-modal").classList.remove("hidden");
+
+            setTimeout(() => {
+                document.getElementById("generating-modal").classList.add("hidden");
+                openTestScreen();
+            }, 1800);
+        }
+
+        function openTestScreen() {
+            document.getElementById("user-dashboard-screen").classList.add("hidden");
+            document.getElementById("quiz-screen").classList.remove("hidden");
+            
+            let firstNameOnly = currentFullName.split(" ")[0].toUpperCase();
+            document.getElementById("profile-name-display").innerText = `${firstNameOnly}`;
+            document.getElementById("challenger-id-display").innerText = `Roll: ${currentRollNo}`;
+            
+            activeQuestions = shuffleArray(questionBank);
+            currentIndex = 0;
+            questionSequenceNumber = 1;
+            consecutiveCorrect = 0;
+            consecutiveWrong = 0;
+            questionsAnsweredInSession = 0;
+            
+            updatePersistentData();
+            loadQuestion();
+        }
+
+        function verifyAdminLogin() {
+            let email = document.getElementById("admin-email-input").value.trim();
+            let pass = document.getElementById("admin-pass-input").value.trim();
+
+            if(email !== "taposhanti82@gmail.com") {
+                alert("Incorrect Admin Email ID!");
+                return;
+            }
+            if(pass !== "71335") {
+                alert("Incorrect Admin Password!");
+                return;
+            }
+
+            openAdminPanel();
+        }
+
+        function openAdminPanel() {
+            let allProfiles = JSON.parse(localStorage.getItem("digitalQuizProfiles")) || {};
+            let keys = Object.keys(allProfiles);
+
+            let statsDiv = document.getElementById("admin-live-stats");
+            statsDiv.innerHTML = `
+                <b>System Live Report:</b> Total Registered Members: <span style="color:#38bdf8; font-weight:bold;">${keys.length}</span>
+            `;
+
+            let tbody = document.getElementById("admin-table-body");
+            tbody.innerHTML = "";
+
+            if(keys.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; color:#9ca3af;">No player records found yet.</td></tr>`;
+            } else {
+                keys.forEach(k => {
+                    let u = allProfiles[k];
+                    if (u) {
+                        tbody.innerHTML += `
+                            <tr>
+                                <td><b>${u.rollNo || '-'}</b></td>
+                                <td>${u.fullName || '-'}</td>
+                                <td style="color:#facc15; font-weight:bold;">${u.score || 0}</td>
+                                <td><button onclick="removeAdminUser('${u.rollNo}')" style="background:rgba(127,29,29,0.8); color:#fca5a5; border:none; padding:0.2rem 0.4rem; border-radius:0.2rem; cursor:pointer; font-size:0.65rem;">Remove 🗑️</button></td>
+                            </tr>
+                        `;
+                    }
+                });
+            }
+
+            document.getElementById("admin-modal").classList.remove("hidden");
+        }
+
+        function removeAdminUser(roll) {
+            let allProfiles = JSON.parse(localStorage.getItem("digitalQuizProfiles")) || {};
+            delete allProfiles[roll];
+            localStorage.setItem("digitalQuizProfiles", JSON.stringify(allProfiles));
+            openAdminPanel();
+        }
+
+        function closeAdminPanel() {
+            document.getElementById("admin-modal").classList.add("hidden");
+        }
+
+        function clearAllData() {
+            if(confirm("Are you sure you want to wipe all stored player records?")) {
+                localStorage.removeItem("digitalQuizProfiles");
+                alert("All records cleared!");
+                openAdminPanel();
+            }
+        }
+
+        function updatePersistentData() {
+            document.getElementById("score-val").innerText = score;
+            document.getElementById("level-val").innerText = level;
+            document.getElementById("question-number-badge").innerText = `Q ${questionSequenceNumber}`;
+            
+            let allProfiles = JSON.parse(localStorage.getItem("digitalQuizProfiles")) || {};
+            if(currentRollNo) {
+                allProfiles[currentRollNo] = {
+                    fullName: currentFullName,
+                    rollNo: currentRollNo,
+                    score: score,
+                    level: level,
+                    correct: correctCount,
+                    wrong: wrongCount,
+                    skip: skipCount
+                };
+                localStorage.setItem("digitalQuizProfiles", JSON.stringify(allProfiles));
+            }
+        }
+
+        function loadQuestion() {
+            clearInterval(timerInterval);
+
+            if (currentIndex >= activeQuestions.length) {
+                activeQuestions = shuffleArray(questionBank);
+                currentIndex = 0;
+            }
+
+            let qData = activeQuestions[currentIndex];
+            
+            document.getElementById("question-text").innerText = qData.q;
+            document.getElementById("topic-badge").innerText = `Topic: ${qData.topic}`;
+            document.getElementById("question-number-badge").innerText = `Q ${questionSequenceNumber}`;
+
+            let optionsHTML = "";
+            qData.options.forEach((opt, idx) => {
+                optionsHTML += `<button onclick="handleAnswerSelection(${idx}, ${qData.answer}, this)" class="option-btn">${opt}</button>`;
+            });
+
+            document.getElementById("options-container").innerHTML = optionsHTML;
+
+            resetTimerBar();
+            timerInterval = setTimeout(() => {
+                handleTimeout();
+            }, 30000);
+        }
+
+        function resetTimerBar() {
+            const timerBar = document.getElementById("timer-bar");
+            timerBar.style.animation = 'none';
+            timerBar.offsetHeight;
+            timerBar.style.animation = 'countdown 30s linear infinite';
+        }
+
+        function handleTimeout() {
+            let allOptions = document.querySelectorAll(".option-btn");
+            allOptions.forEach(btn => btn.disabled = true);
+            
+            skipCount++;
+            consecutiveCorrect = 0;
+            consecutiveWrong++;
+            if (consecutiveWrong >= 2) {
+                if (level > 1) level--;
+                consecutiveWrong = 0;
+            }
+            questionsAnsweredInSession++;
+            questionSequenceNumber++;
+            updatePersistentData();
+
+            setTimeout(() => {
+                checkMilestoneOrProceed();
+            }, 1000);
+        }
+
+        function handleSkipQuestion() {
+            clearInterval(timerInterval);
+            let allOptions = document.querySelectorAll(".option-btn");
+            allOptions.forEach(btn => btn.disabled = true);
+
+            skipCount++;
+            consecutiveCorrect = 0;
+            consecutiveWrong++;
+            if (consecutiveWrong >= 2) {
+                if (level > 1) level--;
+                consecutiveWrong = 0;
+            }
+            questionsAnsweredInSession++;
+            questionSequenceNumber++;
+            updatePersistentData();
+
+            setTimeout(() => {
+                checkMilestoneOrProceed();
+            }, 500);
+        }
+
+        function triggerBalloons() {
+            const container = document.getElementById("game-container");
+            const colors = ["#38bdf8", "#4ade80", "#facc15", "#f43f5e", "#a855f7", "#06b6d4"];
+            
+            for (let i = 0; i < 7; i++) {
+                let balloon = document.createElement("div");
+                balloon.className = "balloon";
+                balloon.style.left = `${Math.random() * 85 + 5}%`;
+                balloon.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                balloon.style.animationDuration = `${1.2 + Math.random() * 1.0}s`;
+                container.appendChild(balloon);
+
+                setTimeout(() => {
+                    balloon.remove();
+                }, 1800);
+            }
+        }
+
+        function handleAnswerSelection(selectedIdx, correctIdx, btnElement) {
+            clearInterval(timerInterval);
+            let allOptions = document.querySelectorAll(".option-btn");
+            allOptions.forEach(btn => btn.disabled = true);
+
+            if (selectedIdx === correctIdx) {
+                btnElement.style.backgroundColor = "#16a34a";
+                btnElement.style.borderColor = "#4ade80";
+                btnElement.style.color = "#ffffff";
+                btnElement.style.fontWeight = "bold";
+                btnElement.innerHTML += " ✓";
+                
+                triggerBalloons();
+
+                score += 5;
+                correctCount++;
+                consecutiveWrong = 0;
+                consecutiveCorrect++;
+                if (consecutiveCorrect >= 3) {
+                    if (level < 100) level++;
+                    consecutiveCorrect = 0;
+                }
+            } else {
+                // Real Glass Shatter and Scatter Effect
+                btnElement.className = "option-btn shatter-glass-shards";
+                btnElement.innerHTML = `
+                    <div class="shard-1"></div>
+                    <div class="shard-2"></div>
+                    <div class="shard-3"></div>
+                    <div class="shard-4"></div>
+                `;
+                
+                allOptions[correctIdx].style.backgroundColor = "#16a34a";
+                allOptions[correctIdx].style.borderColor = "#4ade80";
+                allOptions[correctIdx].style.color = "#ffffff";
+                allOptions[correctIdx].style.fontWeight = "bold";
+                allOptions[correctIdx].innerHTML += " ✓";
+                
+                wrongCount++;
+                consecutiveCorrect = 0;
+                consecutiveWrong++;
+                if (consecutiveWrong >= 2) {
+                    if (level > 1) level--;
+                    consecutiveWrong = 0;
+                }
+            }
+
+            questionsAnsweredInSession++;
+            questionSequenceNumber++;
+            updatePersistentData();
+
+            setTimeout(() => {
+                checkMilestoneOrProceed();
+            }, 1200);
+        }
+
+        function checkMilestoneOrProceed() {
+            if (questionsAnsweredInSession > 0 && questionsAnsweredInSession % 5 === 0) {
+                document.getElementById("ckpt-score").innerText = `${score} pts`;
+                document.getElementById("ckpt-level").innerText = `${level}/100`;
+                document.getElementById("checkpoint-modal").classList.remove("hidden");
+            } else {
+                currentIndex++;
+                loadQuestion();
+            }
+        }
+
+        function resumeQuiz() {
+            document.getElementById("checkpoint-modal").classList.add("hidden");
+            currentIndex++;
+            loadQuestion();
+        }
+
+        function exitToDashboard() {
+            document.getElementById("checkpoint-modal").classList.add("hidden");
+            document.getElementById("quiz-screen").classList.add("hidden");
+            document.getElementById("user-dashboard-screen").classList.remove("hidden");
+            
+            document.getElementById("dashboard-level-display").innerText = `Level ${level} / 100`;
+            document.getElementById("stat-right-count").innerText = correctCount;
+            document.getElementById("stat-wrong-count").innerText = wrongCount;
+            document.getElementById("stat-skip-count").innerText = skipCount;
+
+            loadHallOfFameLeaderboard();
+        }
+    </script>
+</body>
+</html>
