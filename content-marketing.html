@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Content Marketing Hub - Tapas</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Poppins:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #05050a;
+            font-family: 'Poppins', sans-serif;
+            color: #ffffff;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            padding: 15px;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        #fireworksCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .main-container {
+            width: 100%;
+            max-width: 450px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Back to Hub Button Style (SU Page Style) */
+        .back-to-hub {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: #00f2fe;
+            padding: 8px 14px;
+            border-radius: 30px;
+            font-size: 12px;
+            font-weight: 600;
+            text-decoration: none;
+            backdrop-filter: blur(10px);
+            margin-bottom: 12px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+
+        .back-to-hub:hover {
+            background: rgba(0, 242, 254, 0.15);
+            border-color: #00f2fe;
+            color: #fff;
+            transform: translateX(-3px);
+        }
+
+        .hero-section {
+            text-align: center;
+            padding: 10px 0 20px 0;
+        }
+
+        .welcome-tab {
+            background: linear-gradient(135deg, rgba(57, 255, 20, 0.15), rgba(0, 242, 254, 0.15));
+            border: 2px solid rgba(57, 255, 20, 0.5);
+            padding: 20px 10px;
+            border-radius: 22px;
+            box-shadow: 0 0 25px rgba(57, 255, 20, 0.3);
+            margin-bottom: 15px;
+        }
+
+        .welcome-3d {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 21px;
+            font-weight: 900;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: #39ff14;
+            text-shadow: 0 0 15px rgba(57, 255, 20, 0.7);
+            margin-bottom: 5px;
+        }
+
+        .sub-desc {
+            font-size: 12px;
+            color: #cbd5e1;
+            font-weight: 600;
+        }
+
+        .content-card {
+            background: rgba(18, 18, 26, 0.92);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+        }
+
+        .card-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 14.5px;
+            font-weight: 800;
+            color: #00f2fe;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card-title i {
+            color: #39ff14;
+        }
+
+        p {
+            font-size: 13px;
+            color: #cbd5e1;
+            line-height: 1.6;
+            margin-bottom: 10px;
+        }
+
+        .highlight-box {
+            background: rgba(0, 242, 254, 0.08);
+            border-left: 4px solid #00f2fe;
+            padding: 12px;
+            border-radius: 0 12px 12px 0;
+            margin: 12px 0;
+            font-size: 12.5px;
+        }
+
+        .pillar-box, .hook-type-box {
+            background: rgba(244, 63, 94, 0.08);
+            border: 1px solid rgba(244, 63, 94, 0.3);
+            padding: 12px;
+            border-radius: 12px;
+            margin: 10px 0;
+        }
+
+        .pillar-title, .hook-name {
+            font-weight: 800;
+            color: #ff3366;
+            font-size: 13.5px;
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .prod-box {
+            border-radius: 14px;
+            padding: 14px;
+            margin: 12px 0;
+            position: relative;
+            overflow: hidden;
+            border-left: 5px solid;
+        }
+
+        .prod-box.p1 {
+            background: rgba(0, 242, 254, 0.08);
+            border-color: #00f2fe;
+        }
+        .prod-box.p2 {
+            background: rgba(57, 255, 20, 0.08);
+            border-color: #39ff14;
+        }
+        .prod-box.p3 {
+            background: rgba(255, 170, 0, 0.08);
+            border-color: #ffaa00;
+        }
+        .prod-box.p4 {
+            background: rgba(244, 63, 94, 0.08);
+            border-color: #f43f5e;
+        }
+
+        .prod-step-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 13px;
+            font-weight: 800;
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .p1 .prod-step-title { color: #00f2fe; }
+        .p2 .prod-step-title { color: #39ff14; }
+        .p3 .prod-step-title { color: #ffaa00; }
+        .p4 .prod-step-title { color: #f43f5e; }
+
+        .example-box {
+            background: linear-gradient(145deg, rgba(20, 20, 32, 0.95), rgba(10, 10, 18, 0.98));
+            border: 2px dashed #39ff14;
+            border-radius: 20px;
+            padding: 20px;
+            text-align: center;
+            margin-top: 20px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 0 30px rgba(57, 255, 20, 0.2);
+        }
+
+        .example-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 14.5px;
+            font-weight: 800;
+            color: #39ff14;
+            margin-bottom: 10px;
+        }
+
+        .phone-mockup {
+            background: #000;
+            border: 3px solid #444;
+            border-radius: 16px;
+            padding: 15px;
+            margin-top: 15px;
+            text-align: left;
+            position: relative;
+            min-height: 140px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .hook-text {
+            font-size: 13px;
+            font-weight: 800;
+            color: #ff3366;
+            animation: pulseGlow 1.5s infinite alternate;
+        }
+
+        @keyframes pulseGlow {
+            0% { opacity: 0.7; transform: scale(1); }
+            100% { opacity: 1; transform: scale(1.02); }
+        }
+
+        .story-progress {
+            margin-top: 10px;
+            font-size: 12px;
+            color: #ffd700;
+            font-style: italic;
+        }
+
+        .summary-box {
+            background: rgba(0, 242, 254, 0.05);
+            border: 1px solid rgba(0, 242, 254, 0.3);
+            border-radius: 16px;
+            padding: 16px;
+            margin-top: 25px;
+        }
+
+        .summary-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 13.5px;
+            font-weight: 800;
+            color: #00f2fe;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .summary-text {
+            font-size: 12px;
+            color: #cbd5e1;
+            line-height: 1.5;
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="fireworksCanvas"></canvas>
+
+    <div class="main-container">
+        
+        <div class="hero-section">
+            <!-- Back to Hub Button (SU Page Style) -->
+            <div style="text-align: left;">
+                <a href="index.html" class="back-to-hub"><i class="fas fa-arrow-left"></i> Back to Hub</a>
+            </div>
+
+            <div class="welcome-tab">
+                <div class="welcome-3d">Content Marketing Module</div>
+                <div class="sub-desc">Basic to Advanced Guide for Digital Creators</div>
+            </div>
+        </div>
+
+        <!-- 1. What is Content? -->
+        <div class="content-card">
+            <div class="card-title"><i class="fas fa-question-circle"></i> 1. What is Content? (कंटेंट क्या है?)</div>
+            <p>Internet par aap jo bhi videos, photos, memes, graphics ya articles dekhte hain, wo sab kuch <strong>"Content"</strong> kehlata hai.</p>
+            <p>Aur jab aap apne business, brand ya ideas ko promote karne ke liye aisi engaging cheezein internet par share karte hain taaki target audience aapse connect kare, toh ise <strong>Content Marketing</strong> kehte hain.</p>
+        </div>
+
+        <!-- 2. The 5 Content Pillars -->
+        <div class="content-card">
+            <div class="card-title"><i class="fas fa-columns"></i> 2. The 5 Content Pillars (कंटेंट के 5 मुख्य स्तंभ)</div>
+            <p>Aapka har ek content in 5 main pillars mein se kisi ek category par based hota hai:</p>
+
+            <div class="pillar-box">
+                <div class="pillar-title"><i class="fas fa-graduation-cap"></i> 1. Educate (सिखाना)</div>
+                <p>Audience ko naya skill sikhana ya unki problems ko solve karna.<br><em>Example: "Mobile ki battery fast drain kyu hoti hai aur ise kaise fix karein?"</em></p>
+            </div>
+
+            <div class="pillar-box">
+                <div class="pillar-title"><i class="fas fa-laugh-beam"></i> 2. Entertain (मनोरंजन)</div>
+                <p>Audience ko engage rakhne ke liye fun aur comedy elements add karna.<br><em>Example: Relatable reels aur trending memes.</em></p>
+            </div>
+
+            <div class="pillar-box">
+                <div class="pillar-title"><i class="fas fa-star"></i> 3. Inspire (प्रेरणा देना)</div>
+                <p>Success stories ya struggle ke zariye motivation jagana.<br><em>Example: "Ek chhote se gaon ke ladke ne kaise banaya successful startup."</em></p>
+            </div>
+
+            <div class="pillar-box">
+                <div class="pillar-title"><i class="fas fa-handshake"></i> 4. Connect (जुड़ाव)</div>
+                <p>Personal experiences share karke audience ke sath trust build karna.<br><em>Example: "Meri journey ka sabse tough phase..."</em></p>
+            </div>
+
+            <div class="pillar-box">
+                <div class="pillar-title"><i class="fas fa-bullhorn"></i> 5. Promote (प्रचार)</div>
+                <p>Apne products, services ya courses ko directly introduce karna.<br><em>Example: "Check out our new digital marketing toolkit!"</em></p>
+            </div>
+        </div>
+
+        <!-- 3. Attention Economy & Hooks -->
+        <div class="content-card">
+            <div class="card-title"><i class="fas fa-bolt"></i> 3. Attention Economy & Hooks (अटेंशन इकोनॉमी और हुक)</div>
+            <p><strong>Attention Economy:</strong> Aaj ke digital world mein sabse valuable asset paisa nahi, balki <em>audience ka attention</em> hai. Jo jitna zyada attention grab karega, wahi winner hoga.</p>
+            
+            <div class="highlight-box">
+                <strong>What is a Hook? (हुक क्या है?):</strong> Video ya post ke first 3-5 seconds mein aisi statement bolna jisse scrolling rook jaye.
+            </div>
+
+            <p style="font-weight: 700; color: #39ff14; margin-top: 10px;">Types of Hooks (हुक के प्रकार):</p>
+            <div class="hook-type-box">
+                <p>1. <strong>Curiosity Hook:</strong> <em>"Ye secret trick koi nahi batata..."</em><br>
+                2. <strong>Shocking Hook:</strong> <i>"Aapko lagta hai ye true hai? Absolutely not!"</i><br>
+                3. <strong>Question Hook:</strong> <i>"Kya aap bhi daily ye common mistake karte hain?"</i><br>
+                4. <strong>Fear / Negative Hook:</strong> <i>"Agar ye miss kiya toh big loss ho sakta hai!"</i><br>
+                5. <strong>Story Hook:</strong> <i>"Jab maine zero se start kiya tha..."</i><br>
+                6. <strong>Open Loop Hook:</strong> <i>"Video ke end mein wo trick bataunga jo sab change kar degi."</i></p>
+            </div>
+        </div>
+
+        <!-- 4. Idea Engine -->
+        <div class="content-card">
+            <div class="card-title"><i class="fas fa-lightbulb"></i> 4. Idea Engine (आइडिया इंजन)</div>
+            <p>Fresh content ideas kahan se find karein?</p>
+            <p>👉 <strong>Comments & Queries:</strong> Audience ke comments check karo ki wo kya puch rahe hain.<br>
+            👉 <strong>Competitor Analysis:</strong> Dekho top creators kya kar rahe hain aur aap unse better value kaise de sakte hain.<br>
+            👉 <strong>Daily Life Observations:</strong> Apne daily experiences aur learnings se naye topics nikaalein.</p>
+        </div>
+
+        <!-- 5. Content Production & Batching -->
+        <div class="content-card">
+            <div class="card-title"><i class="fas fa-cogs"></i> 5. Content Production & Batching (कंटेंट प्रोडक्शन और बैचिंग)</div>
+            <p>Idea se lekar final publish tak ka process 4 key steps mein divided hai:</p>
+
+            <div class="prod-box p1">
+                <div class="prod-step-title"><i class="fas fa-file-alt"></i> Step 1: Scripting (स्क्रिप्टिंग)</div>
+                <p>Camera on karne se pehle poori outline likho—hook kya hoga, core content kya deliver karoge, aur end mein CTA (Call to Action) kya hoga.</p>
+            </div>
+
+            <div class="prod-box p2">
+                <div class="prod-step-title"><i class="fas fa-video"></i> Step 2: Shooting (शूटिंग)</div>
+                <p>Proper lighting aur clear audio (mic use karke) ke sath video record karo ya clean graphics design karo.</p>
+            </div>
+
+            <div class="prod-box p3">
+                <div class="prod-step-title"><i class="fas fa-cut"></i> Step 3: Editing (एडिटिंग)</div>
+                <p>Unnecessary parts cut karo. Dynamic text captions, smooth transitions aur sound effects add karke video ko engaging banao.</p>
+            </div>
+
+            <div class="prod-box p4">
+                <div class="prod-step-title"><i class="fas fa-chart-line"></i> Step 4: Publishing & Analyzing (पब्लिश और एनालिटिक्स)</div>
+                <p>Best timing par post live karo aur phir analytics track karo ki audience kahan engage hui aur kahan drop-off hua.</p>
+            </div>
+
+            <div class="highlight-box" style="margin-top: 15px;">
+                💡 <strong>Content Batching:</strong> Daily ek video banane ki bajaye, week mein ek din 5-10 videos/posts ek sath record ya design karke save kar lena <strong>Content Batching</strong> kehlata hai. Isse time kafi save hota hai!
+            </div>
+        </div>
+
+        <!-- 6. The 80/20 Rule for Promotion -->
+        <div class="content-card">
+            <div class="card-title"><i class="fas fa-balance-scale"></i> 6. The 80/20 Promotion Rule (80/20 प्रमोशन फॉर्मूला)</div>
+            <p><strong>The Biggest Mistake:</strong> Jyadatar naye creators yeh badi mistake karte hain ki wo apna 100% content sirf apne products, courses ya services ko promote karne mein laga dete hain, jisse audience bore hokar unhe unfollow kar deti hai.</p>
+            
+            <div class="highlight-box">
+                🎯 <strong>The Golden Rule (80/20 Rule):</strong> Apne total content ka <strong>80% valueable, educational ya entertaining content</strong> rakho jo bina kisi selfish motive ke audience ki help kare, aur sirf <strong>20% content</strong> hi apne products ya services ke promotion ke liye use karo!
+            </div>
+            <p>Jab aap pehle 80% free mein value aur trust build karte hain, tab bacha hua 20% promotion automatically successful ho jata hai kyunki audience aap par blind trust karne lagti hai.</p>
+        </div>
+
+        <!-- 7. Multi-Platform Repurposing -->
+        <div class="content-card">
+            <div class="card-title"><i class="fas fa-random"></i> 7. Multi-Platform Repurposing (रिपरपसिंग स्ट्रेटेजी)</div>
+            <p>Ek hi idea ko multiple platforms par kaise use karein?</p>
+            <div class="highlight-box">
+                🎯 <strong>Example:</strong> Agar aapne ek long YouTube video banai <em>"5 Ways to Save Money"</em>:<br>
+                * Us video ke best clips cut karke <strong>Instagram Reels</strong> aur <strong>YouTube Shorts</strong> bana lo.<br>
+                * Uske key points ko compile karke ek detailed <strong>Facebook Post</strong> ya <strong>LinkedIn Article</strong> publish kar do.<br>
+                * Effort ek baar, reach multiple platforms par!
+            </div>
+        </div>
+
+        <!-- 8. Animated & Live Example -->
+        <div class="example-box">
+            <div class="example-title">🌟 Live Animated Example (कंटेंट मार्केटिंग का उदाहरण)</div>
+            <p style="font-size: 12px; color: #aaa;">Suppose aapki ek ice-cream shop hai:</p>
+            
+            <div class="phone-mockup">
+                <div class="hook-text" id="animationText">⚡ "Wait! Kya aapne kabhi sirf 5 rupees mein itni huge chocolate ice-cream khai hai?"</div>
+                <div class="story-progress" id="animationDesc">Step 1: Hook grabbed the user's attention instantly!</div>
+            </div>
+        </div>
+
+        <!-- Summary Box -->
+        <div class="summary-box">
+            <div class="summary-title"><i class="fas fa-bookmark"></i> Quick Summary (क्विक समरी)</div>
+            <div class="summary-text">
+                Content marketing poori tarah se yeh samajhne par based hai ki content kya hota hai, iske 5 main pillars (Educate, Entertain, Inspire, Connect, Promote) ko kaise master karein, attention economy mein strong hooks ke zariye audience ka dhyan kaise khinchein, ek proper production workflow follow karein, 80/20 promotion rule ke through sirf 20% hi direct sell karein, aur content repurposing ke sath apni reach ko double karein!
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const stages = [
+            { hook: '⚡ "Wait! Kya aapne kabhi sirf 5 rupees mein itni huge chocolate ice-cream khai hai?"', desc: 'Step 1: Hook (Attention Grabber - Creating Curiosity)' },
+            { hook: '🍦 "Ye rahi wo secret recipe jisse ye amazing ice-cream ghar par hi ban jati hai!"', desc: 'Step 2: Core Value (Educating & Delivering Content)' },
+            { hook: '🔥 "Abhi niche click karo aur apni free ice-cream order book karo!"', desc: 'Step 3: Promote & Call to Action (CTA)' }
+        ];
+
+        let currentIndex = 0;
+        setInterval(() => {
+            currentIndex = (currentIndex + 1) % stages.length;
+            document.getElementById('animationText').innerText = stages[currentIndex].hook;
+            document.getElementById('animationDesc').innerText = stages[currentIndex].desc;
+        }, 4000);
+
+        const canvas = document.getElementById('fireworksCanvas');
+        const ctx = canvas.getContext('2d');
+        function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        class Firework {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = canvas.height;
+                this.targetY = Math.random() * (canvas.height / 2);
+                this.speed = 4 + Math.random() * 3;
+                this.particles = [];
+                this.exploded = false;
+                this.color = `hsl(${Math.random() * 360}, 100%, 60%)`;
+            }
+            update() {
+                if (!this.exploded) {
+                    this.y -= this.speed;
+                    if (this.y <= this.targetY) { this.exploded = true; this.explode(); }
+                } else {
+                    for (let i = this.particles.length - 1; i >= 0; i--) {
+                        this.particles[i].update();
+                        if (this.particles[i].alpha <= 0) this.particles.splice(i, 1);
+                    }
+                }
+            }
+            explode() {
+                let count = 30 + Math.random() * 20;
+                for (let i = 0; i < count; i++) this.particles.push(new Particle(this.x, this.targetY, this.color));
+            }
+            draw() {
+                if (!this.exploded) { ctx.fillStyle = this.color; ctx.fillRect(this.x, this.y, 3, 10); }
+                else { this.particles.forEach(p => p.draw()); }
+            }
+        }
+
+        class Particle {
+            constructor(x, y, color) {
+                this.x = x; this.y = y; this.color = color;
+                let angle = Math.random() * Math.PI * 2, speed = Math.random() * 4;
+                this.vx = Math.cos(angle) * speed; this.vy = Math.sin(angle) * speed;
+                this.alpha = 1; this.decay = Math.random() * 0.02 + 0.015;
+            }
+            update() { this.x += this.vx; this.y += this.vy; this.vy += 0.08; this.alpha -= this.decay; }
+            draw() {
+                ctx.save(); ctx.globalAlpha = this.alpha; ctx.fillStyle = this.color;
+                ctx.beginPath(); ctx.arc(this.x, this.y, 2, 0, Math.PI * 2); ctx.fill(); ctx.restore();
+            }
+        }
+
+        let fireworks = [];
+        function animate() {
+            ctx.fillStyle = 'rgba(5, 5, 10, 0.2)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            if (Math.random() < 0.03) fireworks.push(new Firework());
+            for (let i = fireworks.length - 1; i >= 0; i--) {
+                fireworks[i].update(); fireworks[i].draw();
+                if (fireworks[i].exploded && fireworks[i].particles.length === 0) fireworks.splice(i, 1);
+            }
+            requestAnimationFrame(animate);
+        }
+        animate();
+    </script>
+</body>
+</html>
